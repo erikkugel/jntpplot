@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ntpplot;
+package jntpplot;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,36 +12,35 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  *
  * @author ernest
  */
 public class StatsTest {
-
+    
     public StatsTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
     }
-
+    
     @After
     public void tearDown() {
     }
 
-    String fileName = "/tmp/sys.test";
+    String fileName = "test/jntpplot/sys";
     Stats instance = new Stats();
-
+    
     /**
      * Test of setFileName method, of class Stats.
      */
@@ -79,18 +76,5 @@ public class StatsTest {
         String firstStat = firstResult.get(0);
         assertEquals ("57341", firstStat);
     }
-
-    /**
-     * Test of getInsertFile method, of class Stats.
-     */
-    @Test
-    public void testSetInsertFile() throws Exception {
-        System.out.println("getInsertFile");
-        instance.setFileName(fileName);
-        Boolean expResult = true;
-        Boolean result = instance.setInsertFile();
-        assertEquals(expResult, result);
-    }
     
 }
-

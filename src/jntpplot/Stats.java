@@ -3,38 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ntpplot;
+package jntpplot;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
  * @author ernest
  */
-public class Ntpplot {
-
-    /**
-     * @param args the command line arguments
-     * @throws java.io.FileNotFoundException
-     */
-    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
-        // TODO code application logic here
-
-        // http://stackoverflow.com/questions/4008223/print-in-new-line-java
-        System.out.println("Hello ntpplot!");
-    }
-}
-
-class Stats {
+public class Stats {
     
     private String statsFileName;
     
@@ -50,9 +35,11 @@ class Stats {
         return injestFile(statsFileName);
     }
     
+    /*
     public Boolean setInsertFile() throws IOException, FileNotFoundException, ClassNotFoundException {
         return insertFile(statsFileName);
     }
+    */
     
     private ArrayList<ArrayList<String>> injestFile(String statsFileName) throws FileNotFoundException, IOException, ClassNotFoundException {
         System.out.println("Injesting file: " + statsFileName);
@@ -70,6 +57,7 @@ class Stats {
         return messages;
     } 
 
+    /*
     private Boolean insertFile(String statsFileName) throws FileNotFoundException, IOException, ClassNotFoundException {
         System.out.println("Injesting file: " + statsFileName);
 
@@ -85,6 +73,7 @@ class Stats {
         }
         return true;
     }
+    */
 
     private ArrayList<String> injestLine(String line) throws ClassNotFoundException {
         ArrayList<String> message = new ArrayList<String>();
@@ -94,6 +83,7 @@ class Stats {
         return message;
     }
     
+    /*
     private Boolean insertStats(ArrayList<String> message) throws ClassNotFoundException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -118,4 +108,5 @@ class Stats {
         }
         return null;
     }
+    */
 }
