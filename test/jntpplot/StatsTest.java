@@ -38,37 +38,14 @@ public class StatsTest {
     public void tearDown() {
     }
 
-    String fileName = "test/jntpplot/sys";
-    Stats instance = new Stats();
-    
-    /**
-     * Test of setFileName method, of class Stats.
-     */
-    @Test
-    public void testSetFileName() {
-        System.out.println("setFileName");
-        instance.setFileName(fileName);
-    }
-
-    /**
-     * Test of getFileName method, of class Stats.
-     */
-    @Test
-    public void testGetFileName() {
-        System.out.println("getFileName");
-        String expResult = fileName;
-        instance.setFileName(expResult);
-        String result = instance.getFileName();
-        System.out.println("Result: " + result);
-        assertEquals(expResult, result);
-    }
-
     /**
      * Test of getInjestFile method, of class Stats.
      */
     @Test
     public void testGetInjestFile() throws Exception {
         System.out.println("getInjestFile");
+        String fileName = "test/jntpplot/sys";
+        Stats instance = new Stats();
         instance.setFileName(fileName);
         ArrayList<ArrayList<String>> result = instance.getInjestFile();
         System.out.println("Result: " + result);
