@@ -47,7 +47,6 @@ public class DatabaseTest {
         System.out.println("openDb");
         Database instance = new Database();
         instance.setDbName("stats_test");
-        //Connection expResult = null;
         Connection result = instance.openDb();
         assertNotNull(result);
     }
@@ -59,7 +58,7 @@ public class DatabaseTest {
     @Test
     public void testCrateTable() {
         System.out.println("crateTable");
-        Connection c = null;
+        String dbName = "stats_test";
         String tableName = "sysstats";
         String tableColumns = "(date INT," +
                 "time REAL," +
@@ -74,9 +73,12 @@ public class DatabaseTest {
                 "bad_authentication INT," +
                 "rate_exceeded INT)";
         Database instance = new Database();
-        instance.setDbName("stats_test");
+        instance.setDbName(dbName);
         Connection conn = instance.openDb();
-        boolean result = instance.crateTable(conn, tableName, tableColumns);
+        instance.setTableName(tableName);
+        instance.setTableColumns(tableColumns);
+        instance.setDbConnection(conn);
+        Boolean result = instance.crateTable();
         assertTrue(result);
     }
     

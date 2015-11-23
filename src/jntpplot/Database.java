@@ -14,6 +14,9 @@ import java.sql.*;
 public class Database {
     
     private String dbName;
+    private String tableName;
+    private String tableColumns;
+    private Connection dbConnection;
     
     public void setDbName (String name) {
         dbName = name;
@@ -21,6 +24,30 @@ public class Database {
     
     public String getDbName () {
         return dbName;
+    }
+    
+    public void setTableName (String name) {
+        tableName = name;
+    }
+    
+    public String getTableName () {
+        return tableName;
+    }
+    
+    public void setTableColumns (String columns) {
+        tableColumns = columns;
+    }
+    
+    public String getTableColumns () {
+        return tableColumns;
+    }
+    
+    public void setDbConnection (Connection conn) {
+        dbConnection = conn;
+    }
+    
+    public Connection getDbConnection () {
+        return dbConnection;
     }
     
     // http://www.tutorialspoint.com/sqlite/sqlite_java.htm
@@ -37,22 +64,22 @@ public class Database {
         return c;
     }
     
-    public boolean crateTable( Connection c, String tableName, String tableColumns ) {
-    Statement stmt = null;
+    public boolean crateTable() {
+        Statement stmt = null;
     
-    try {
-
-      stmt = c.createStatement();
-      String sql = "CREATE TABLE " + tableName + " " + tableColumns;
-      stmt.executeUpdate(sql);
-      stmt.close();
-      c.close();
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      System.exit(0);
+        try {
+            stmt = dbConnection.createStatement();
+            String sql = "CREATE TABLE " + tableName + " " + tableColumns;
+            stmt.executeUpdate(sql);
+            stmt.close();
+            dbConnection.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            return false;
+        }
+        System.out.println("Table created successfully");
+        return true;
     }
-    System.out.println("Table created successfully");
-    return true;
-  }
     
 }
