@@ -91,16 +91,11 @@ public class Database {
         String rowValues = "(";
         int statIndex = 0;
         for (String stat : statMessage) {
-            if (stat.indexOf('.') >= 0) {
-                rowValues += "\"" + Float.parseFloat(stat) + "\"" + ", ";
-            } else {
-                rowValues += "\"" + Integer.parseInt(stat) + "\"" + ", ";
-            }
+            rowValues += "\"" + stat + "\"" + ", ";
         }
         rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
         tableColumns = tableColumns.replace(" INT", "");
         tableColumns = tableColumns.replace(" REAL", "");
-        //rowValues = rowValues.replace(",",")");
         System.out.println ("rowValues = " + rowValues);
         try {
             stmt = dbConnection.createStatement();
@@ -110,7 +105,8 @@ public class Database {
             stmt.executeUpdate(sql);
 
             stmt.close();
-            dbConnection.commit();
+            // We're already in auto-commit mode, so no need to commit explicitly.
+            //dbConnection.commit();
             dbConnection.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
