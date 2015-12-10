@@ -6,6 +6,8 @@
 package jntpplot;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -79,6 +81,39 @@ public class DatabaseTest {
         instance.setTableColumns(tableColumns);
         instance.setDbConnection(conn);
         Boolean result = instance.crateTable();
+        assertTrue(result);
+    }
+
+    /**
+     * Test of insertStat method, of class Database.
+     */
+    @Test
+    public void testInsertStat() {
+        System.out.println("insertStat");
+        String dbName = "stats_test";
+        String tableName = "sysstats";
+        ArrayList<String> message =
+                new ArrayList<String>(Arrays.asList("57341","1683.133","3600","34103","17","16457","17646","0","0","0","0","0"));
+        String tableColumns = "(date INT," +
+                "time REAL," +
+                "time_since_restart INT," +
+                "packets_recieved INT," +
+                "packats_processed INT," +
+                "current_version INT," +
+                "previous_version INT," +
+                "bad_version INT," +
+                "access_denied INT," +
+                "bad_length_or_format INT," +
+                "bad_authentication INT," +
+                "rate_exceeded INT)";
+                Database instance = new Database();
+        instance.setDbName(dbName);
+        Connection conn = instance.openDb();
+        instance.setTableName(tableName);
+        instance.setTableColumns(tableColumns);
+        instance.setDbConnection(conn);
+        instance.setStatMessage(message);
+        Boolean result = instance.insertStat();
         assertTrue(result);
     }
     
