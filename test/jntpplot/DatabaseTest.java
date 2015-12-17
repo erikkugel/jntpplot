@@ -6,6 +6,7 @@
 package jntpplot;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.junit.After;
@@ -48,7 +49,7 @@ public class DatabaseTest {
     public void testOpenDb() {
         System.out.println("openDb");
         Database instance = new Database();
-        instance.setDbName("stats_test");
+        instance.setDbName("test/jntpplot/stats_db");
         Connection result = instance.openDb();
         assertNotNull(result);
     }
@@ -60,7 +61,7 @@ public class DatabaseTest {
     @Test
     public void testCrateTable() {
         System.out.println("crateTable");
-        String dbName = "stats_test";
+        String dbName = "test/jntpplot/stats_db";
         String tableName = "sysstats";
         String tableColumns = "(date INT," +
                 "time REAL," +
@@ -73,7 +74,8 @@ public class DatabaseTest {
                 "access_denied INT," +
                 "bad_length_or_format INT," +
                 "bad_authentication INT," +
-                "rate_exceeded INT)";
+                "rate_exceeded INT," +
+                "unknown INT)";
         Database instance = new Database();
         instance.setDbName(dbName);
         Connection conn = instance.openDb();
@@ -88,13 +90,13 @@ public class DatabaseTest {
      * Test of insertStat method, of class Database.
      */
     @Test
-    public void testInsertStat() {
+    public void testInsertStat() throws SQLException {
         System.out.println("insertStat");
-        String dbName = "stats_test";
+        String dbName = "test/jntpplot/stats_db";
         String tableName = "sysstats";
         ArrayList<String> message =
-                new ArrayList<String>(Arrays.asList("57341","1683.133","3600","34103","17","16457","17646","0","0","0","0","0"));
-        String tableColumns = "(date INT," +
+                new ArrayList<>(Arrays.asList("57368", "85263.715", "3600", "49046", "17", "35918", "13128", "0", "0", "11", "0", "0", "0"));
+        /*String tableColumns = "(date INT," +
                 "time REAL," +
                 "time_since_restart INT," +
                 "packets_recieved INT," +
@@ -105,12 +107,13 @@ public class DatabaseTest {
                 "access_denied INT," +
                 "bad_length_or_format INT," +
                 "bad_authentication INT," +
-                "rate_exceeded INT)";
+                "rate_exceeded INT," +
+                "unknown INT)";*/
                 Database instance = new Database();
         instance.setDbName(dbName);
         Connection conn = instance.openDb();
         instance.setTableName(tableName);
-        instance.setTableColumns(tableColumns);
+        //instance.setTableColumns(tableColumns);
         instance.setDbConnection(conn);
         instance.setStatMessage(message);
         Boolean result = instance.insertStat();
