@@ -35,25 +35,24 @@ public class Jntpplot {
         String fileName = "test/jntpplot/sys";
         Stats statsFile = new Stats();
         statsFile.setFileName(fileName);
-        ArrayList<ArrayList<String>> stats = statsFile.getInjestFile();
-        
+        ArrayList<ArrayList<String>> stats = statsFile.getInjestFile();      
         
         for (ArrayList<String> message: stats) {
             Database statsDb = new Database();
-            statsDb.setDbName("stats_test");
+            statsDb.setDbName("test/jntpplot/stats_db");
             statsDb.setTableName("sysstats");
             statsDb.setTableColumns("(date INT," +
-                "time REAL," +
-                "time_since_restart INT," +
-                "packets_recieved INT," +
-                "packats_processed INT," +
-                "current_version INT," +
-                "previous_version INT," +
-                "bad_version INT," +
-                "access_denied INT," +
-                "bad_length_or_format INT," +
-                "bad_authentication INT," +
-                "rate_exceeded INT)");
+                    "time REAL," +
+                    "time_since_restart INT," +
+                    "packets_recieved INT," +
+                    "packats_processed INT," +
+                    "current_version INT," +
+                    "previous_version INT," +
+                    "bad_version INT," +
+                    "access_denied INT," +
+                    "bad_length_or_format INT," +
+                    "bad_authentication INT," +
+                    "rate_exceeded INT)");
             Connection conn = statsDb.openDb();
             System.out.println(message);
             statsDb.setStatMessage(message);

@@ -51,7 +51,7 @@ public class StatsTest {
         System.out.println("Result: " + result);
         ArrayList<String> firstResult = result.get(0);
         String firstStat = firstResult.get(0);
-        assertEquals ("57341", firstStat);
+        assertEquals ("57368", firstStat);
     }
     
 }

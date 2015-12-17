@@ -87,33 +87,36 @@ public class Database {
     }
     
     public boolean insertStat() throws SQLException {
-        Statement stmt = null;
-        String rowValues = "(";
-        int statIndex = 0;
-        for (String stat : statMessage) {
-            rowValues += "\"" + stat + "\"" + ", ";
-        }
-        rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
-        tableColumns = tableColumns.replace(" INT", "");
-        tableColumns = tableColumns.replace(" REAL", "");
-        System.out.println ("rowValues = " + rowValues);
+        
         try {
-            stmt = dbConnection.createStatement();
-               
-            String sql = "INSERT INTO " + tableName + " " + tableColumns + " VALUES " + rowValues + ";";
-            System.out.println("sql: " + sql);
-            stmt.executeUpdate(sql);
+            Statement checkStmt = dbConnection.createStatement();
+            ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
 
-            stmt.close();
-            // We're already in auto-commit mode, so no need to commit explicitly.
-            //dbConnection.commit();
-            dbConnection.close();
+            if ( !checkResult.next() ) {
+                String rowValues = "(";
+                for (String stat : statMessage) {
+                    rowValues += "\"" + stat + "\"" + ", ";
+                }
+        
+                rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
+                System.out.println ("rowValues = " + rowValues);
+                
+                Statement insertStmt = dbConnection.createStatement();
+
+                String sql = "INSERT INTO " + tableName + " VALUES " + rowValues;
+                System.out.println("sql: " + sql);
+                insertStmt.executeUpdate(sql);
+
+                insertStmt.close();
+                dbConnection.close();
+                System.out.println("Record created successfully");
+            } else {
+                System.out.println("Record alredy present");
+            }
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            //System.exit(0);
             return false;
         }
-        System.out.println("Records created successfully");
         return true;
     }
     
