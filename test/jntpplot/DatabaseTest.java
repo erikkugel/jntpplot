@@ -19,7 +19,7 @@ import org.junit.Ignore;
 
 /**
  *
- * @author ernest
+ * @author Ernest Kugel
  */
 public class DatabaseTest {
     
