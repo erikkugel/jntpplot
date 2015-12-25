@@ -86,9 +86,9 @@ public class Database {
         return true;
     }
     
-    public boolean insertStat() throws SQLException {
+    public Boolean insertStat() throws SQLException {
         
-        try {
+        //try {
             Statement checkStmt = dbConnection.createStatement();
             ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
 
@@ -112,11 +112,12 @@ public class Database {
                 System.out.println("Record created successfully");
             } else {
                 System.out.println("Record alredy present");
+                return false;
             }
-        } catch ( Exception e ) {
+       /* } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             return false;
-        }
+        }*/
         return true;
     }
     
