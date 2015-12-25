@@ -31,7 +31,7 @@ public class Jntpplot {
 
         // http://stackoverflow.com/questions/4008223/print-in-new-line-java
         System.out.println("Hello ntpplot!");
-        Ingestor ingestThis = new Ingestor();
-        System.out.println(ingestThis + ": " + ingestThis.ingestFileIntoDatabase() + " errors.");
+        Runner runThis = new Runner();
+        runThis.sysStats();
     }
 }

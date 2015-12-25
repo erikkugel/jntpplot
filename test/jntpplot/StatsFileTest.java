@@ -17,9 +17,9 @@ import static org.junit.Assert.*;
  *
  * @author ernest
  */
-public class StatsTest {
+public class StatsFileTest {
     
-    public StatsTest() {
+    public StatsFileTest() {
     }
     
     @BeforeClass
@@ -39,15 +39,15 @@ public class StatsTest {
     }
 
     /**
-     * Test of getInjestFile method, of class Stats.
+     * Test of getInjestFile method, of class StatsFile.
      */
     @Test
-    public void testGetInjestFile() throws Exception {
+    public void testInjestFile() throws Exception {
         System.out.println("getInjestFile");
         String fileName = "test/jntpplot/sys";
-        Stats instance = new Stats();
+        StatsFile instance = new StatsFile();
         instance.setFileName(fileName);
-        ArrayList<ArrayList<String>> result = instance.getInjestFile();
+        ArrayList<ArrayList<String>> result = instance.injestFile();
         System.out.println("Result: " + result);
         ArrayList<String> firstResult = result.get(0);
         String firstStat = firstResult.get(0);

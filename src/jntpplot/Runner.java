@@ -32,7 +32,8 @@ public class Runner {
             "access_denied INT," +
             "bad_length_or_format INT," +
             "bad_authentication INT," +
-            "rate_exceeded INT)");
+            "rate_exceeded INT," +
+            "kiss_of_death INT)");
         if ( sysStats.ingestFileIntoDatabase() == 0 ) {
             return true;
         } else {

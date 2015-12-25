@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author ernest
  */
-public class File {
+public class StatsFile {
     
     private String statsFileName;
     
@@ -31,11 +31,7 @@ public class File {
         return statsFileName;
     }
     
-    public ArrayList<ArrayList<String>> getInjestFile() throws IOException, FileNotFoundException, ClassNotFoundException {
-        return injestFile(statsFileName);
-    }
-    
-    private ArrayList<ArrayList<String>> injestFile(String statsFileName) throws FileNotFoundException, IOException, ClassNotFoundException {
+    public ArrayList<ArrayList<String>> injestFile() throws FileNotFoundException, IOException, ClassNotFoundException {
         System.out.println("Injesting file: " + statsFileName);
         
         // http://stackoverflow.com/questions/5868369/how-to-read-a-large-text-file-line-by-line-using-java
