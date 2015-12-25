@@ -5,7 +5,6 @@
  */
 package jntpplot;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -64,34 +63,8 @@ public class Ingestor {
     public String getTableColumns () {
         return tableColumns;
     }
-    
-    private boolean createTable() {
-        System.out.println("crateTable");
-        String dbName = "test/jntpplot/stats_db";
-        String tableName = "sysstats";
-        String tableColumns = "(date INT," +
-                "time REAL," +
-                "time_since_restart INT," +
-                "packets_recieved INT," +
-                "packats_processed INT," +
-                "current_version INT," +
-                "previous_version INT," +
-                "bad_version INT," +
-                "access_denied INT," +
-                "bad_length_or_format INT," +
-                "bad_authentication INT," +
-                "rate_exceeded INT," +
-                "kiss_of_death INT)";
-        Database instance = new Database();
-        instance.setDbName(dbName);
-        Connection conn = instance.openDb();
-        instance.setTableName(tableName);
-        instance.setTableColumns(tableColumns);
-        instance.setDbConnection(conn);
-        return instance.crateTable();
-    }
         
-    public Integer ingestFileIntoDatabase() throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
+    public Integer ingestFileIntoDatabase() throws SQLException, IOException, ClassNotFoundException {
 
         StatsFile statsFile = new StatsFile();
         
@@ -105,23 +78,26 @@ public class Ingestor {
         statsDb.setTableName(tableName);
         statsDb.setTableColumns(tableColumns);
 
-        for (ArrayList<String> message: stats) {
+        // Avoid the new style ArrayList iterative syntax to handle individual record failiures
+        for (int index = 0; index < stats.size(); index ++) {
             try {
-
                 Connection conn = statsDb.openDb();
-                System.out.println(message);
-                statsDb.setStatMessage(message);
+                System.out.println(stats.get(index));
+                statsDb.setStatMessage(stats.get(index));
                 statsDb.setDbConnection(conn);
                 if ( ! statsDb.insertStat() ) {
                     duplicates++;
-                }           
+                }
             } catch (SQLException insertStatException) {
                 errors++;
-                System.out.println(insertStatException.getErrorCode() + " - " + insertStatException.getClass().getName() + ": " + insertStatException.getMessage() + " Catch SQL Errors here...");
-                switch (insertStatException.getMessage() ) {
-                    case "[SQLITE_ERROR] SQL error or missing database (no such table: sysstats)":
-                        Connection conn = statsDb.openDb();
-                        statsDb.crateTable();
+                // Handle a missing table by creating one
+                if ( insertStatException.getMessage().contains("(no such table: " + tableName + ")") ) {
+                    System.out.println("No such table: " + tableName + ", creating one.");
+                    statsDb.crateTable();
+                    index --;
+                // Trow everything else
+                } else {
+                    throw insertStatException;
                 }
             }
         }

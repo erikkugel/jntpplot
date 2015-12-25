@@ -5,15 +5,8 @@
  */
 package jntpplot;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -24,9 +17,11 @@ public class Jntpplot {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
      * @throws java.io.FileNotFoundException
+     * @throws java.lang.ClassNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         // TODO code application logic here
 
         // http://stackoverflow.com/questions/4008223/print-in-new-line-java

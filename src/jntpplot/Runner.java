@@ -33,12 +33,9 @@ public class Runner {
             "bad_length_or_format INT," +
             "bad_authentication INT," +
             "rate_exceeded INT," +
-            "kiss_of_death INT)");
-        if ( sysStats.ingestFileIntoDatabase() == 0 ) {
-            return true;
-        } else {
-            return false;
-        }
+            "kiss_of_death INT);");
+              
+        return sysStats.ingestFileIntoDatabase() == 0;
     }
     
 }

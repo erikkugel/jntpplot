@@ -87,38 +87,33 @@ public class Database {
     }
     
     public Boolean insertStat() throws SQLException {
-        
-        //try {
-            Statement checkStmt = dbConnection.createStatement();
-            ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
 
-            if ( !checkResult.next() ) {
-                String rowValues = "(";
-                for (String stat : statMessage) {
-                    rowValues += "\"" + stat + "\"" + ", ";
-                }
-        
-                rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
-                System.out.println ("rowValues = " + rowValues);
-                
-                Statement insertStmt = dbConnection.createStatement();
+        Statement checkStmt = dbConnection.createStatement();
+        ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
 
-                String sql = "INSERT INTO " + tableName + " VALUES " + rowValues;
-                System.out.println("sql: " + sql);
-                insertStmt.executeUpdate(sql);
-
-                insertStmt.close();
-                dbConnection.close();
-                System.out.println("Record created successfully");
-            } else {
-                System.out.println("Record alredy present");
-                return false;
+        if ( !checkResult.next() ) {
+            String rowValues = "(";
+            for (String stat : statMessage) {
+                rowValues += "\"" + stat + "\"" + ", ";
             }
-       /* } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+
+            rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
+            System.out.println ("rowValues = " + rowValues);
+
+            Statement insertStmt = dbConnection.createStatement();
+
+            String sql = "INSERT INTO " + tableName + " VALUES " + rowValues;
+            System.out.println("sql: " + sql);
+            insertStmt.executeUpdate(sql);
+
+            insertStmt.close();
+            dbConnection.close();
+            System.out.println("Record created successfully");
+            return true;
+        } else {
+            System.out.println("Record alredy present");
             return false;
-        }*/
-        return true;
+        }
     }
     
 }
