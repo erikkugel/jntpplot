@@ -4,10 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/Jntpplot.java</file>
-            <file>file:/Users/ernest/NetBeansProjects/jntpplot/test/jntpplot/StatsTest.java</file>
+            <file>file:/Users/ernest/NetBeansProjects/jntpplot/test/jntpplot/StatsFileTest.java</file>
             <file>file:/Users/ernest/NetBeansProjects/jntpplot/test/jntpplot/DatabaseTest.java</file>
             <file>file:/Users/ernest/NetBeansProjects/jntpplot/.gitignore</file>
-            <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/Stats.java</file>
+            <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/Runner.java</file>
+            <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/Ingestor.java</file>
+            <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/StatsFile.java</file>
             <file>file:/Users/ernest/NetBeansProjects/jntpplot/src/jntpplot/Database.java</file>
         </group>
     </open-files>

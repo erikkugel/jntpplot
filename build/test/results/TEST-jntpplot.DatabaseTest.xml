@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="LM-YYZ-00874791" name="jntpplot.DatabaseTest" skipped="0" tests="3" time="0.142" timestamp="2015-12-25T21:09:40">
+<testsuite errors="0" failures="0" hostname="LM-YYZ-00874791" name="jntpplot.DatabaseTest" skipped="0" tests="3" time="0.215" timestamp="2015-12-27T15:31:52">
   <properties>
     <property name="netbeans.autoupdate.country" value="US" />
     <property name="javac.test.classpath" value="/Users/ernest/Library/Application Support/NetBeans/8.0.2/modules/ext/sqlitejdbc-3.8.7.jar:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/classes:/Applications/NetBeans/NetBeans 8.0.2.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
@@ -39,7 +39,7 @@
     <property name="user.name" value="ernest" />
     <property name="copylibs.rebase" value="true" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner jntpplot.DatabaseTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/ernest/NetBeansProjects/jntpplot/build/test/results/TEST-jntpplot.DatabaseTest.xml crashfile=/Users/ernest/NetBeansProjects/jntpplot/build/junitvmwatcher3479386052131724794.properties propsfile=/Users/ernest/NetBeansProjects/jntpplot/build/junit8424047417205492252.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner jntpplot.DatabaseTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/ernest/NetBeansProjects/jntpplot/build/test/results/TEST-jntpplot.DatabaseTest.xml crashfile=/Users/ernest/NetBeansProjects/jntpplot/build/junitvmwatcher4604479772385507832.properties propsfile=/Users/ernest/NetBeansProjects/jntpplot/build/junit2033372774532645831.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -307,17 +307,19 @@
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
   </properties>
-  <testcase classname="jntpplot.DatabaseTest" name="testCrateTable" time="0.096" />
-  <testcase classname="jntpplot.DatabaseTest" name="testInsertStat" time="0.0" />
-  <testcase classname="jntpplot.DatabaseTest" name="testOpenDb" time="0.0" />
-  <system-out><![CDATA[crateTable
+  <testcase classname="jntpplot.DatabaseTest" name="testOpenDb" time="0.15" />
+  <testcase classname="jntpplot.DatabaseTest" name="testCrateTable" time="0.003" />
+  <testcase classname="jntpplot.DatabaseTest" name="testInsertStat" time="0.002" />
+  <system-out><![CDATA[openDb
+Opened database successfully
+crateTable
 Opened database successfully
 Table created successfully
 insertStat
 Opened database successfully
-Record alredy present
-openDb
-Opened database successfully
+rowValues = ("57368", "85263.715", "3600", "49046", "17", "35918", "13128", "0", "0", "11", "0", "0", "0")
+sql: INSERT INTO sysstats VALUES ("57368", "85263.715", "3600", "49046", "17", "35918", "13128", "0", "0", "11", "0", "0", "0")
+Record created successfully
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

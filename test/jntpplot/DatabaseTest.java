@@ -5,6 +5,10 @@
  */
 package jntpplot;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,6 +52,13 @@ public class DatabaseTest {
     @Test
     public void testOpenDb() {
         System.out.println("openDb");
+        try {
+            Path statsDbPath = FileSystems.getDefault().getPath("test", "jntpplot", "stats_db");
+            Files.deleteIfExists(statsDbPath);
+        } catch (IOException x) {
+            // File permission problems are caught here.
+            System.err.println(x);
+        }
         Database instance = new Database();
         instance.setDbName("test/jntpplot/stats_db");
         Connection result = instance.openDb();

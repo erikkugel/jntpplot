@@ -65,7 +65,7 @@ public class Database {
         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         System.exit(0);
     }
-        System.out.println("Opened database successfully");
+        // System.out.println("Opened database successfully");
         return dbConnection;
     }
     
@@ -98,20 +98,20 @@ public class Database {
             }
 
             rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
-            System.out.println ("rowValues = " + rowValues);
+            //System.out.println ("rowValues = " + rowValues);
 
             Statement insertStmt = dbConnection.createStatement();
 
             String sql = "INSERT INTO " + tableName + " VALUES " + rowValues;
-            System.out.println("sql: " + sql);
+            //System.out.println("sql: " + sql);
             insertStmt.executeUpdate(sql);
 
             insertStmt.close();
             dbConnection.close();
-            System.out.println("Record created successfully");
+            //System.out.println("Record created successfully");
             return true;
         } else {
-            System.out.println("Record alredy present");
+            //System.out.println("Record alredy present");
             return false;
         }
     }
