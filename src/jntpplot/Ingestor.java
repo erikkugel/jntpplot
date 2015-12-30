@@ -75,19 +75,24 @@ public class Ingestor {
         statsDb.setTableName(tableName);
         statsDb.setTableColumns(tableColumns);
         
+        // Make sure the table is in place and create it otherwise
+        Connection initConn = statsDb.openDb();
+        statsDb.setDbConnection(initConn);
         statsDb.crateTable();
 
+        // Ingest
         for (ArrayList <String> stat : stats) {
             try {
                 Connection conn = statsDb.openDb();
-                statsDb.setStatMessage(stat);
                 statsDb.setDbConnection(conn);
+                statsDb.setStatMessage(stat);
+                
                 if ( ! statsDb.insertStat() ) {
                     duplicates ++;
                 }
             } catch (SQLException insertStatException) {
                 errors ++;
-                // Handle a missing table by creating one
+                // Alert on missing table
                 if ( insertStatException.getMessage().contains("(no such table: " + tableName + ")") ) {
                     System.err.println("No such table: " + tableName);
                     System.exit(1);

@@ -78,6 +78,7 @@ public class Database {
             stmt.close();
             dbConnection.close();
         } catch ( Exception e ) {
+            System.out.println("!");
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             //System.exit(0);
             return false;
@@ -90,7 +91,7 @@ public class Database {
 
         Statement checkStmt = dbConnection.createStatement();
         ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
-
+        
         if ( !checkResult.next() ) {
             String rowValues = "(";
             for (String stat : statMessage) {
