@@ -29,7 +29,7 @@ public class StatsFile {
     
     public ArrayList<ArrayList<String>> injestFile() throws FileNotFoundException, IOException, ClassNotFoundException {
         System.out.println("Injesting file: " + statsFileName);
-        
+               
         // http://stackoverflow.com/questions/5868369/how-to-read-a-large-text-file-line-by-line-using-java
         BufferedReader in;
         in = new BufferedReader(new FileReader(statsFileName));

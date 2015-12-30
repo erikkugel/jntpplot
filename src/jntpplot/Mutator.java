@@ -15,7 +15,6 @@ public class Mutator {
     
     private ArrayList<ArrayList<String>> stats;
     private int statIndex;
-    private String mutateAction;
     
     public void setStats (ArrayList<ArrayList<String>> sourceStats) {
         stats = sourceStats;
@@ -31,14 +30,6 @@ public class Mutator {
     
     public int getStatIndex () {
         return statIndex;
-    }
-    
-    public void setMutateAction (String action) {
-        mutateAction = action;
-    }
-    
-    public String getMutateAction () {
-        return mutateAction;
     }
     
     public ArrayList<ArrayList<String>> mutateHexToDec() {
@@ -58,4 +49,17 @@ public class Mutator {
         return stats;
     }
     
+    public ArrayList<ArrayList<String>> appendEpochTimeFromNTPStats() {
+
+        String stat;
+        
+        for (int messageIndex = 0 ; messageIndex < stats.size() ; messageIndex ++) {
+            ArrayList<String> message = stats.get(messageIndex);
+            stat = message.get(statIndex);
+            // appendEpochTime logic goes here
+            message.set(statIndex, stat);
+            stats.set(messageIndex, message);
+        }
+        return stats;
+    }
 }

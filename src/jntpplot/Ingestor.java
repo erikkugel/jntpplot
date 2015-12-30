@@ -74,12 +74,13 @@ public class Ingestor {
         statsDb.setDbName(dbName);
         statsDb.setTableName(tableName);
         statsDb.setTableColumns(tableColumns);
+        
+        statsDb.crateTable();
 
-        // Avoid the new style ArrayList iterative syntax to handle individual record failiures
-        for (int index = 0; index < stats.size(); index ++) {
+        for (ArrayList <String> stat : stats) {
             try {
                 Connection conn = statsDb.openDb();
-                statsDb.setStatMessage(stats.get(index));
+                statsDb.setStatMessage(stat);
                 statsDb.setDbConnection(conn);
                 if ( ! statsDb.insertStat() ) {
                     duplicates ++;
@@ -88,18 +89,16 @@ public class Ingestor {
                 errors ++;
                 // Handle a missing table by creating one
                 if ( insertStatException.getMessage().contains("(no such table: " + tableName + ")") ) {
-                    System.err.println("No such table: " + tableName + ", creating one.");
-                    statsDb.crateTable();
-                    index --;
-                // Trow everything else
+                    System.err.println("No such table: " + tableName);
+                    System.exit(1);
+                    // Trow everything else
                 } else {
                     throw insertStatException;
                 }
             }
         }
         System.out.println("Duplicates: " + duplicates);
-        return errors;
-    
+        return errors;    
     }
     
     public Integer ingestFileIntoDatabase() throws IOException, ClassNotFoundException, SQLException {
@@ -111,4 +110,5 @@ public class Ingestor {
         }
         return intoDatabaseErrors;
     }
+    
 }

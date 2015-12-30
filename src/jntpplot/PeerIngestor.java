@@ -21,7 +21,6 @@ public class PeerIngestor extends Ingestor {
         Mutator peerMutator = new Mutator();
         peerMutator.setStats(stats);
         peerMutator.setStatIndex(PEER_STATUS_HEX_FIELD);
-        peerMutator.setMutateAction("hex_to_dec");
         return peerMutator.mutateHexToDec();
     }
     

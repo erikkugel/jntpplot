@@ -40,7 +40,7 @@ public class Runner {
 
     // Define and ingestor for peer statistics:
     public boolean peerStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
-        PeerIngestor peerStats = new PeerIngestor();
+        Ingestor peerStats = new PeerIngestor();
         peerStats.setFileName("/tmp/peers");
         peerStats.setDbName("/tmp/stats_db");
         peerStats.setTableName("peerstats");
