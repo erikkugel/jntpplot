@@ -99,7 +99,7 @@ public class Database {
             }
 
             rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
-            //System.out.println ("rowValues = " + rowValues);
+            System.out.println ("rowValues = " + rowValues);
 
             Statement insertStmt = dbConnection.createStatement();
 

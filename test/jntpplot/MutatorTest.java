@@ -69,16 +69,30 @@ public class MutatorTest {
     /**
      * Test of appendEpochTimeFromNTPStats method, of class Mutator.
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testAppendEpochTimeFromNTPStats() {
         System.out.println("appendEpochTimeFromNTPStats");
         Mutator instance = new Mutator();
-        ArrayList<ArrayList<String>> expResult = null;
+        
+        final byte DAY_FIELD = 0;
+        final byte SECOND_FIELD = 1;
+        final byte OUTPUT_FIELD = 2;
+        
+        ArrayList<ArrayList<String>> expResult = new ArrayList<ArrayList<String>>();
+        ArrayList<String> expMessage = new ArrayList<>(Arrays.asList("12345", "6789.123", "1066614789123"));
+        expResult.add(expMessage);
+        
+        ArrayList<ArrayList<String>> payload = new ArrayList<ArrayList<String>>();
+        ArrayList<String> payloadMessage = new ArrayList<>(Arrays.asList("12345", "6789.123"));
+        payload.add(payloadMessage);
+
+        instance.setStatIndex(DAY_FIELD, SECOND_FIELD, OUTPUT_FIELD);
+        instance.setStats(payload);
+        
         ArrayList<ArrayList<String>> result = instance.appendEpochTimeFromNTPStats();
+
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

@@ -27,7 +27,7 @@ public class Jntpplot {
         // http://stackoverflow.com/questions/4008223/print-in-new-line-java
         System.out.println("Hello ntpplot!");
         Runner runner1 = new Runner();
-        runner1.sysStats();
+        //runner1.sysStats();
         runner1.peerStats();
     }
 }

@@ -6,6 +6,7 @@
 package jntpplot;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -14,7 +15,10 @@ import java.util.ArrayList;
 public class Mutator {
     
     private ArrayList<ArrayList<String>> stats;
-    private int statIndex;
+    private byte statIndex;
+    private byte statIndex0;
+    private byte statIndex1;
+    private byte statOutputIndex;
     
     public void setStats (ArrayList<ArrayList<String>> sourceStats) {
         stats = sourceStats;
@@ -24,8 +28,14 @@ public class Mutator {
         return stats;
     }
     
-    public void setStatIndex (int index) {
+    public void setStatIndex (byte index) {
         statIndex = index;
+    }
+    
+    public void setStatIndex (byte index0, byte index1, byte outputIndex) {
+        statIndex0 = index0;
+        statIndex1 = index1;
+        statOutputIndex = outputIndex;
     }
     
     public int getStatIndex () {
@@ -51,13 +61,16 @@ public class Mutator {
     
     public ArrayList<ArrayList<String>> appendEpochTimeFromNTPStats() {
 
-        String stat;
+        long days;
+        float seconds;
         
         for (int messageIndex = 0 ; messageIndex < stats.size() ; messageIndex ++) {
             ArrayList<String> message = stats.get(messageIndex);
-            stat = message.get(statIndex);
-            // appendEpochTime logic goes here
-            message.set(statIndex, stat);
+            days = Long.parseLong(message.get(statIndex0));
+            seconds = Float.parseFloat(message.get(statIndex1));
+            
+            //System.out.println(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000));
+            message.add(statOutputIndex, String.valueOf(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000)));
             stats.set(messageIndex, message);
         }
         return stats;

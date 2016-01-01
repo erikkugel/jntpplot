@@ -68,7 +68,6 @@ public class DatabaseTest {
     /**
      * Test of crateTable method, of class Database.
      */
-    //@Ignore ("Not ready")
     @Test
     public void testCrateTable() {
         System.out.println("crateTable");
