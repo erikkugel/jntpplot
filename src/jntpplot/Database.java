@@ -7,6 +7,8 @@ package jntpplot;
 
 import java.sql.*;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -19,6 +21,8 @@ public class Database {
     private String tableColumns;
     private Connection dbConnection;
     private ArrayList<String> statMessage;
+    
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
     public void setDbName (String name) {
         dbName = name;
@@ -61,16 +65,16 @@ public class Database {
     try {
         Class.forName("org.sqlite.JDBC");
         dbConnection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-    } catch ( Exception e ) {
-        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+    } catch ( ClassNotFoundException | SQLException e ) {
+        logger.error( e.getClass().getName() + ": " + e.getMessage() );
         System.exit(0);
     }
-        // System.out.println("Opened database successfully");
+       logger.trace("Opened database successfully");
         return dbConnection;
     }
     
     public boolean crateTable() {
-        Statement stmt = null;    
+        Statement stmt;    
         try {
             stmt = dbConnection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " " + tableColumns;
@@ -78,12 +82,10 @@ public class Database {
             stmt.close();
             dbConnection.close();
         } catch ( Exception e ) {
-            System.out.println("!");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            //System.exit(0);
+            logger.error( e.getClass().getName() + ": " + e.getMessage() );
             return false;
         }
-        System.out.println("Table created successfully");
+        logger.trace("Table created successfully");
         return true;
     }
     
@@ -99,20 +101,20 @@ public class Database {
             }
 
             rowValues = rowValues.substring(0, rowValues.length() - 2) + ")";
-            System.out.println ("rowValues = " + rowValues);
+            logger.debug("rowValues = " + rowValues);
 
             Statement insertStmt = dbConnection.createStatement();
 
             String sql = "INSERT INTO " + tableName + " VALUES " + rowValues;
-            //System.out.println("sql: " + sql);
+            logger.debug("sql: " + sql);
             insertStmt.executeUpdate(sql);
 
             insertStmt.close();
             dbConnection.close();
-            //System.out.println("Record created successfully");
+            logger.trace("Record created successfully");
             return true;
         } else {
-            //System.out.println("Record alredy present");
+            logger.trace("Record alredy present");
             return false;
         }
     }

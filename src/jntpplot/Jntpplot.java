@@ -8,6 +8,8 @@ package jntpplot;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -21,13 +23,16 @@ public class Jntpplot {
      * @throws java.io.FileNotFoundException
      * @throws java.lang.ClassNotFoundException
      */
+    
+    // http://logging.apache.org/log4j/2.x/manual/configuration.html
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
+    
     public static void main(String[] args) throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         // TODO code application logic here
 
-        // http://stackoverflow.com/questions/4008223/print-in-new-line-java
-        System.out.println("Hello ntpplot!");
+        logger.trace("Hello ntpplot!");
         Runner runner1 = new Runner();
-        //runner1.sysStats();
+        runner1.sysStats();
         runner1.peerStats();
     }
 }

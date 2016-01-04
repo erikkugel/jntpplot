@@ -6,6 +6,8 @@
 package jntpplot;
 
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -17,9 +19,11 @@ public class SysIngestor extends Ingestor {
     final static byte SECOND_FIELD = 1;
     final static byte OUTPUT_FIELD = 13;
     
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
+    
     @Override
     public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
-        System.out.println("SysIngestor mutateStats");
+        logger.trace("SysIngestor mutateStats");
         Mutator sysMutator = new Mutator();
         sysMutator.setStats(stats);
         sysMutator.setStatIndex(DAY_FIELD, SECOND_FIELD, OUTPUT_FIELD);

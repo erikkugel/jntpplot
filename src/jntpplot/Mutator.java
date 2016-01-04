@@ -7,6 +7,8 @@ package jntpplot;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -19,6 +21,8 @@ public class Mutator {
     private byte statIndex0;
     private byte statIndex1;
     private byte statOutputIndex;
+    
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
     public void setStats (ArrayList<ArrayList<String>> sourceStats) {
         stats = sourceStats;
@@ -49,10 +53,10 @@ public class Mutator {
         for (int messageIndex = 0 ; messageIndex < stats.size() ; messageIndex ++) {
             ArrayList<String> message = stats.get(messageIndex);
             stat = message.get(statIndex);
-            //System.out.println("pre: " + stat);
+            logger.debug("pre: " + stat);
             int newStat = Integer.parseInt(stat, 16);
             stat = String.valueOf(newStat);
-            //System.out.println("post: " + stat);
+            logger.debug("post: " + stat);
             message.set(statIndex, stat);
             stats.set(messageIndex, message);
         }
@@ -69,7 +73,8 @@ public class Mutator {
             days = Long.parseLong(message.get(statIndex0));
             seconds = Float.parseFloat(message.get(statIndex1));
             
-            //System.out.println(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000));
+            logger.debug("pre: " + days + " days, " + seconds + " seconds,");
+            logger.debug("post: " + TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000) + " milliseconds.");
             message.add(statOutputIndex, String.valueOf(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000)));
             stats.set(messageIndex, message);
         }

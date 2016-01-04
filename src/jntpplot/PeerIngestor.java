@@ -6,6 +6,8 @@
 package jntpplot;
 
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -15,9 +17,11 @@ public class PeerIngestor extends Ingestor {
     
     final static byte PEER_STATUS_HEX_FIELD = 3;
     
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
+    
     @Override
     public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
-        System.out.println("PeerIngestor mutateStats");
+        logger.trace("PeerIngestor mutateStats");
         Mutator peerMutator = new Mutator();
         peerMutator.setStats(stats);
         peerMutator.setStatIndex(PEER_STATUS_HEX_FIELD);

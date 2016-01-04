@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -51,11 +50,11 @@ public class MutatorTest {
         System.out.println("mutateHexToDec");
         Mutator hexToDec = new Mutator();
 
-        ArrayList<ArrayList<String>> expResult = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> expResult = new ArrayList<>();
         ArrayList<String> expMessage = new ArrayList<>(Arrays.asList("37914"));
         expResult.add(expMessage);
         
-        ArrayList<ArrayList<String>> payload = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> payload = new ArrayList<>();
         ArrayList<String> payloadMessage = new ArrayList<>(Arrays.asList("941a"));
         payload.add(payloadMessage);
 
@@ -79,11 +78,11 @@ public class MutatorTest {
         final byte SECOND_FIELD = 1;
         final byte OUTPUT_FIELD = 2;
         
-        ArrayList<ArrayList<String>> expResult = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> expResult = new ArrayList<>();
         ArrayList<String> expMessage = new ArrayList<>(Arrays.asList("12345", "6789.123", "1066614789123"));
         expResult.add(expMessage);
         
-        ArrayList<ArrayList<String>> payload = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> payload = new ArrayList<>();
         ArrayList<String> payloadMessage = new ArrayList<>(Arrays.asList("12345", "6789.123"));
         payload.add(payloadMessage);
 

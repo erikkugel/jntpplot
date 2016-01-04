@@ -8,6 +8,8 @@ package jntpplot;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -15,9 +17,13 @@ import java.sql.SQLException;
  */
 public class Runner {
     
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
+    
     // Define and ingestor for system statistics:
     public boolean sysStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
-        Ingestor sysStats = new Ingestor();
+        logger.trace(getClass().getName());
+        
+        Ingestor sysStats = new SysIngestor();
         sysStats.setFileName("/tmp/sys");
         sysStats.setDbName("/tmp/stats_db");
         sysStats.setTableName("sysstats");
@@ -41,6 +47,8 @@ public class Runner {
 
     // Define and ingestor for peer statistics:
     public boolean peerStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
+        logger.trace(getClass().getName());
+        
         Ingestor peerStats = new PeerIngestor();
         peerStats.setFileName("/tmp/peers");
         peerStats.setDbName("/tmp/stats_db");

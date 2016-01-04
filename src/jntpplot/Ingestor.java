@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -21,6 +23,8 @@ public class Ingestor {
     protected String dbName;
     protected String tableName;
     protected String tableColumns;
+    
+    private static final Logger logger = LogManager.getLogger(Jntpplot.class);
 
     public void setFileName (String name) {
         fileName = name;
@@ -63,7 +67,7 @@ public class Ingestor {
     
     public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
         // Override me to mutate some stats!
-        System.out.println("Ingestor mutateStats");
+        logger.trace("Ingestor mutateStats");
         return stats;
     }
     
@@ -94,7 +98,7 @@ public class Ingestor {
                 errors ++;
                 // Alert on missing table
                 if ( insertStatException.getMessage().contains("(no such table: " + tableName + ")") ) {
-                    System.err.println("No such table: " + tableName);
+                    logger.error("No such table: " + tableName);
                     System.exit(1);
                     // Trow everything else
                 } else {
@@ -102,16 +106,16 @@ public class Ingestor {
                 }
             }
         }
-        System.out.println("Duplicates: " + duplicates);
+        logger.debug("Duplicates: " + duplicates);
         return errors;    
     }
     
     public Integer ingestFileIntoDatabase() throws IOException, ClassNotFoundException, SQLException {
-        System.out.println("Ingestor ingestFileIntoDatabase");
+        logger.trace("Ingestor ingestFileIntoDatabase");
         
         int intoDatabaseErrors = intoDatabase(mutateStats(ingestFile(fileName)));
         if ( intoDatabaseErrors > 0 ) {
-            System.err.println(intoDatabaseErrors + " errors during insertion");
+            logger.error(intoDatabaseErrors + " errors during insertion");
         }
         return intoDatabaseErrors;
     }
