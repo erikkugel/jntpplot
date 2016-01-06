@@ -22,7 +22,7 @@ public class SysIngestor extends Ingestor {
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
     @Override
-    public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
+    ArrayList<ArrayList<String>> mutateStats () {
         logger.trace("SysIngestor mutateStats");
         Mutator sysMutator = new Mutator();
         sysMutator.setStats(stats);

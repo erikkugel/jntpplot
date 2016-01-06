@@ -1,3 +1,5 @@
+/build/
 /dist/
+/nbproject/private/
 /test/jntpplot/sys
 /test/jntpplot/stats_db

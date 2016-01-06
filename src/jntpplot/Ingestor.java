@@ -17,61 +17,57 @@ import org.apache.logging.log4j.Logger;
  *
  * @author ernest
  */
-public class Ingestor {
+public abstract class Ingestor {
     
-    protected String fileName;
-    protected String dbName;
-    protected String tableName;
-    protected String tableColumns;
+    private String fileName;
+    private String dbName;
+    private String tableName;
+    private String tableColumns;
+    ArrayList<ArrayList<String>> stats;
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
 
-    public void setFileName (String name) {
+    public void setFileName(String name) {
         fileName = name;
     }
     
-    public String getFileName () {
+    public String getFileName() {
         return fileName;
     }
     
-    public void setDbName (String name) {
+    public void setDbName(String name) {
         dbName = name;
     } 
     
-    public String getDbName () {
+    public String getDbName() {
         return dbName;
     }
 
-    public void setTableName (String name) {
+    public void setTableName(String name) {
         tableName = name;
     }
     
-    public String getTableName () {
+    public String getTableName() {
         return tableName;
     }
     
-    public void setTableColumns (String columns) {
+    public void setTableColumns(String columns) {
         tableColumns = columns;
     }
     
-    public String getTableColumns () {
+    public String getTableColumns() {
         return tableColumns;
     }
     
-    private ArrayList<ArrayList<String>> ingestFile (String fileName) throws IOException, FileNotFoundException, ClassNotFoundException {
-        StatsFile statsFile = new StatsFile();
-        
+    private void setStats() throws IOException, FileNotFoundException, ClassNotFoundException {
+        StatsFile statsFile = new StatsFile();        
         statsFile.setFileName(fileName);
-        return statsFile.injestFile();
+        stats = statsFile.injestFile();
     }
     
-    public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
-        // Override me to mutate some stats!
-        logger.trace("Ingestor mutateStats");
-        return stats;
-    }
+    abstract ArrayList<ArrayList<String>> mutateStats ();
     
-    private int intoDatabase (ArrayList<ArrayList<String>> stats) throws SQLException {
+    private int setDatabase() throws SQLException {
         int errors = 0;
         int duplicates = 0;
         Database statsDb = new Database();
@@ -113,7 +109,10 @@ public class Ingestor {
     public Integer ingestFileIntoDatabase() throws IOException, ClassNotFoundException, SQLException {
         logger.trace("Ingestor ingestFileIntoDatabase");
         
-        int intoDatabaseErrors = intoDatabase(mutateStats(ingestFile(fileName)));
+        setStats();
+        mutateStats();
+        int intoDatabaseErrors = setDatabase();
+        
         if ( intoDatabaseErrors > 0 ) {
             logger.error(intoDatabaseErrors + " errors during insertion");
         }

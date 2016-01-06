@@ -20,7 +20,7 @@ public class PeerIngestor extends Ingestor {
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
     @Override
-    public ArrayList<ArrayList<String>> mutateStats (ArrayList<ArrayList<String>> stats) {
+    ArrayList<ArrayList<String>> mutateStats () {
         logger.trace("PeerIngestor mutateStats");
         Mutator peerMutator = new Mutator();
         peerMutator.setStats(stats);
