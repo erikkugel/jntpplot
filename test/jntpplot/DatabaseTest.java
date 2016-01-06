@@ -6,9 +6,7 @@
 package jntpplot;
 
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,12 +17,26 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
 /**
  *
  * @author Ernest Kugel
  */
+
+/**
+ * "It is recommended that test methods be written so that they are independent
+ *  of the order that they are executed"
+ * 
+ *  (http://junit.org/apidocs/index.html?org/junit/FixMethodOrder.html).
+ * 
+ *  However, there's still value in testing simple things like database
+ *  connection and table creation. Until this can be elegantly addressed,
+ *  JUnit 4.12 was imported with support for FixMethodOrder.
+ */
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DatabaseTest {
     
     public DatabaseTest() {
@@ -50,15 +62,10 @@ public class DatabaseTest {
      * Test of openDb method, of class Database.
      */    
     @Test
-    public void testOpenDb() {
+    public void test1OpenDb() {
         System.out.println("openDb");
-        try {
-            Path statsDbPath = FileSystems.getDefault().getPath("test", "jntpplot", "stats_db");
-            Files.deleteIfExists(statsDbPath);
-        } catch (IOException x) {
-            // File permission problems are caught here.
-            System.err.println(x);
-        }
+        File databaseFile = new File("test/jntpplot/stats_db");
+        databaseFile.deleteOnExit();
         Database instance = new Database();
         instance.setDbName("test/jntpplot/stats_db");
         Connection result = instance.openDb();
@@ -69,23 +76,11 @@ public class DatabaseTest {
      * Test of crateTable method, of class Database.
      */
     @Test
-    public void testCrateTable() {
+    public void test2CrateTable() {
         System.out.println("crateTable");
         String dbName = "test/jntpplot/stats_db";
         String tableName = "sysstats";
-        String tableColumns = "(date INT," +
-                "time REAL," +
-                "time_since_restart INT," +
-                "packets_recieved INT," +
-                "packats_processed INT," +
-                "current_version INT," +
-                "previous_version INT," +
-                "bad_version INT," +
-                "access_denied INT," +
-                "bad_length_or_format INT," +
-                "bad_authentication INT," +
-                "rate_exceeded INT," +
-                "kiss_of_death INT)";
+        String tableColumns = "(date INT, time REAL)";
         Database instance = new Database();
         instance.setDbName(dbName);
         Connection conn = instance.openDb();
@@ -100,13 +95,12 @@ public class DatabaseTest {
      * Test of insertStat method, of class Database.
      */
     @Test
-    public void testInsertStat() throws SQLException {
+    public void test3InsertStat() throws SQLException {
         System.out.println("insertStat");
         String dbName = "test/jntpplot/stats_db";
         String tableName = "sysstats";
         ArrayList<String> message =
-                new ArrayList<>(Arrays.asList("57368", "85263.715", "3600",
-                "49046", "17", "35918", "13128", "0", "0", "11", "0", "0", "0"));
+                new ArrayList<>(Arrays.asList("12345", "6789.123"));
         Database instance = new Database();
         instance.setDbName(dbName);
         Connection conn = instance.openDb();

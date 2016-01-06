@@ -5,6 +5,8 @@
  */
 package jntpplot;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,6 +47,13 @@ public class StatsFileTest {
     public void testInjestFile() throws Exception {
         System.out.println("getInjestFile");
         String fileName = "test/jntpplot/sys";
+        
+        File statsFile = new File(fileName);
+        statsFile.deleteOnExit();
+        PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+        writer.println("57368");
+        writer.close();
+        
         StatsFile instance = new StatsFile();
         instance.setFileName(fileName);
         ArrayList<ArrayList<String>> result = instance.injestFile();
