@@ -119,4 +119,12 @@ public class Database {
         }
     }
     
+    public void selectStat() throws SQLException {
+        //ArrayList<ArrayList<String>> stats;
+        Statement checkStmt = dbConnection.createStatement();
+        ResultSet checkResult = checkStmt.executeQuery( "SELECT date,time FROM " + tableName + " WHERE date = " + statMessage.get(0) + " AND time = " + statMessage.get(1) );
+        System.out.println(checkResult.getMetaData());
+        //return stats;
+    }
+    
 }

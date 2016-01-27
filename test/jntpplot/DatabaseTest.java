@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
+import org.junit.Ignore;
 
 /**
  *
@@ -36,18 +36,25 @@ import org.junit.runners.MethodSorters;
  *  JUnit 4.12 was imported with support for FixMethodOrder.
  */
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder
 public class DatabaseTest {
     
+    static String databaseFilePath = "test/jntpplot/stats_db";
+    static String tableName = "sysstats";
     public DatabaseTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws IOException {       
+        System.out.println("setupClass - openDb");
+        File databaseFile = new File(databaseFilePath);
+        databaseFile.createNewFile();
     }
     
     @AfterClass
     public static void tearDownClass() {
+        File databaseFile = new File(databaseFilePath);
+        databaseFile.delete();
     }
     
     @Before
@@ -60,26 +67,22 @@ public class DatabaseTest {
 
     /**
      * Test of openDb method, of class Database.
-     */    
+     */
     @Test
     public void test1OpenDb() {
-        System.out.println("openDb");
-        File databaseFile = new File("test/jntpplot/stats_db");
-        databaseFile.deleteOnExit();
         Database instance = new Database();
-        instance.setDbName("test/jntpplot/stats_db");
+        instance.setDbName(databaseFilePath);
         Connection result = instance.openDb();
         assertNotNull(result);
     }
-
+    
     /**
      * Test of crateTable method, of class Database.
      */
     @Test
     public void test2CrateTable() {
         System.out.println("crateTable");
-        String dbName = "test/jntpplot/stats_db";
-        String tableName = "sysstats";
+        String dbName = databaseFilePath;
         String tableColumns = "(date INT, time REAL)";
         Database instance = new Database();
         instance.setDbName(dbName);
@@ -93,12 +96,12 @@ public class DatabaseTest {
 
     /**
      * Test of insertStat method, of class Database.
+     * @throws java.sql.SQLException
      */
     @Test
     public void test3InsertStat() throws SQLException {
         System.out.println("insertStat");
-        String dbName = "test/jntpplot/stats_db";
-        String tableName = "sysstats";
+        String dbName = databaseFilePath;
         ArrayList<String> message =
                 new ArrayList<>(Arrays.asList("12345", "6789.123"));
         Database instance = new Database();
@@ -110,6 +113,82 @@ public class DatabaseTest {
         instance.setStatMessage(message);
         Boolean result = instance.insertStat();
         assertTrue(result);
+    }
+
+    /**
+     * Test of selectStat method, of class Database.
+     * @throws java.lang.Exception
+     */
+    @Ignore
+    @Test
+    public void test4SelectStat() throws Exception {
+        System.out.println("selectStat");
+        Database instance = new Database();
+        instance.selectStat();
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of setDbName method, of class Database.
+     */
+    @Test
+    public void testSetDbName() {
+    }
+
+    /**
+     * Test of getDbName method, of class Database.
+     */
+    @Test
+    public void testGetDbName() {
+    }
+
+    /**
+     * Test of setTableName method, of class Database.
+     */
+    @Test
+    public void testSetTableName() {
+    }
+
+    /**
+     * Test of getTableName method, of class Database.
+     */
+    @Test
+    public void testGetTableName() {
+    }
+
+    /**
+     * Test of setTableColumns method, of class Database.
+     */
+    @Test
+    public void testSetTableColumns() {
+    }
+
+    /**
+     * Test of getTableColumns method, of class Database.
+     */
+    @Test
+    public void testGetTableColumns() {
+    }
+
+    /**
+     * Test of setStatMessage method, of class Database.
+     */
+    @Test
+    public void testSetStatMessage() {
+    }
+
+    /**
+     * Test of setDbConnection method, of class Database.
+     */
+    @Test
+    public void testSetDbConnection() {
+    }
+
+    /**
+     * Test of getDbConnection method, of class Database.
+     */
+    @Test
+    public void testGetDbConnection() {
     }
     
 }
