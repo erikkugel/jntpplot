@@ -15,7 +15,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class PeerIngestor extends Ingestor {
     
-    final static byte PEER_STATUS_HEX_FIELD = 3;
+    final static byte DAY_FIELD = 0;
+    final static byte SECOND_FIELD = 1;
+    
+    final static byte PEER_STATUS_HEX_FIELD = 4;
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
@@ -24,8 +27,11 @@ public class PeerIngestor extends Ingestor {
         logger.trace("PeerIngestor mutateStats");
         Mutator peerMutator = new Mutator();
         peerMutator.setStats(stats);
+        peerMutator.setStatIndex(DAY_FIELD, SECOND_FIELD);
+        stats = peerMutator.appendEpochTimeFromNTPStats();
         peerMutator.setStatIndex(PEER_STATUS_HEX_FIELD);
-        return peerMutator.mutateHexToDec();
+        stats = peerMutator.mutateHexToDec();
+        return stats;
     }
     
 }

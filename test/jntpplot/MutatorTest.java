@@ -76,17 +76,16 @@ public class MutatorTest {
         
         final byte DAY_FIELD = 0;
         final byte SECOND_FIELD = 1;
-        final byte OUTPUT_FIELD = 2;
         
         ArrayList<ArrayList<String>> expResult = new ArrayList<>();
-        ArrayList<String> expMessage = new ArrayList<>(Arrays.asList("12345", "6789.123", "1066614789123"));
+        ArrayList<String> expMessage = new ArrayList<>(Arrays.asList("1066614789123", "12345", "6789.123"));
         expResult.add(expMessage);
         
         ArrayList<ArrayList<String>> payload = new ArrayList<>();
         ArrayList<String> payloadMessage = new ArrayList<>(Arrays.asList("12345", "6789.123"));
         payload.add(payloadMessage);
 
-        instance.setStatIndex(DAY_FIELD, SECOND_FIELD, OUTPUT_FIELD);
+        instance.setStatIndex(DAY_FIELD, SECOND_FIELD);
         instance.setStats(payload);
         
         ArrayList<ArrayList<String>> result = instance.appendEpochTimeFromNTPStats();

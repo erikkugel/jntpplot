@@ -20,7 +20,6 @@ public class Mutator {
     private byte statIndex;
     private byte statIndex0;
     private byte statIndex1;
-    private byte statOutputIndex;
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
@@ -36,10 +35,9 @@ public class Mutator {
         statIndex = index;
     }
     
-    public void setStatIndex (byte index0, byte index1, byte outputIndex) {
+    public void setStatIndex (byte index0, byte index1) {
         statIndex0 = index0;
         statIndex1 = index1;
-        statOutputIndex = outputIndex;
     }
     
     public int getStatIndex () {
@@ -75,7 +73,7 @@ public class Mutator {
             
             logger.debug("pre: " + days + " days, " + seconds + " seconds,");
             logger.debug("post: " + TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000) + " milliseconds.");
-            message.add(statOutputIndex, String.valueOf(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000)));
+            message.add(0, String.valueOf(TimeUnit.MILLISECONDS.convert(days, TimeUnit.DAYS) + (long)(seconds * 1000)));
             stats.set(messageIndex, message);
         }
         return stats;

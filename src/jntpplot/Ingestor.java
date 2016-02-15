@@ -8,7 +8,9 @@ package jntpplot;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,42 +70,28 @@ public abstract class Ingestor {
     abstract ArrayList<ArrayList<String>> mutateStats ();
     
     private int setDatabase() throws SQLException {
-        int errors = 0;
-        int duplicates = 0;
         Database statsDb = new Database();
         statsDb.setDbName(dbName);
         statsDb.setTableName(tableName);
         statsDb.setTableColumns(tableColumns);
         
         // Make sure the table is in place and create it otherwise
-        Connection initConn = statsDb.openDb();
-        statsDb.setDbConnection(initConn);
+        Connection conn = statsDb.openDb();
+        statsDb.setDbConnection(conn);
         statsDb.crateTable();
 
         // Ingest
+        int statsCount = 0;
+        int insertCount = 0;
         for (ArrayList <String> stat : stats) {
-            try {
-                Connection conn = statsDb.openDb();
-                statsDb.setDbConnection(conn);
-                statsDb.setStatMessage(stat);
-                
-                if ( ! statsDb.insertStat() ) {
-                    duplicates ++;
-                }
-            } catch (SQLException insertStatException) {
-                errors ++;
-                // Alert on missing table
-                if ( insertStatException.getMessage().contains("(no such table: " + tableName + ")") ) {
-                    logger.error("No such table: " + tableName);
-                    System.exit(1);
-                    // Trow everything else
-                } else {
-                    throw insertStatException;
-                }
+            statsDb.setStatMessage(stat);
+            statsCount ++;
+            if ( statsDb.insertStat() ) {
+                insertCount ++;
             }
         }
-        logger.debug("Duplicates: " + duplicates);
-        return errors;    
+        logger.trace("Ingested " + insertCount + " out of " + statsCount + " stats.");
+        return insertCount;    
     }
     
     public Integer ingestFileIntoDatabase() throws IOException, ClassNotFoundException, SQLException {
@@ -111,12 +99,8 @@ public abstract class Ingestor {
         
         setStats();
         mutateStats();
-        int intoDatabaseErrors = setDatabase();
-        
-        if ( intoDatabaseErrors > 0 ) {
-            logger.error(intoDatabaseErrors + " errors during insertion");
-        }
-        return intoDatabaseErrors;
+        int intoDatabase = setDatabase();
+        return intoDatabase;
     }
     
 }

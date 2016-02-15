@@ -8,6 +8,7 @@ package jntpplot;
 import java.io.IOException;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
+import org.junit.runners.MethodSorters;
 
 /**
  *
@@ -36,11 +38,12 @@ import org.junit.Ignore;
  *  JUnit 4.12 was imported with support for FixMethodOrder.
  */
 
-@FixMethodOrder
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DatabaseTest {
     
     static String databaseFilePath = "test/jntpplot/stats_db";
     static String tableName = "sysstats";
+    static String tableColumns = "(date INT, time REAL PRIMARY KEY DESC)";
     public DatabaseTest() {
     }
     
@@ -82,10 +85,9 @@ public class DatabaseTest {
     @Test
     public void test2CrateTable() {
         System.out.println("crateTable");
-        String dbName = databaseFilePath;
-        String tableColumns = "(date INT, time REAL)";
+        
         Database instance = new Database();
-        instance.setDbName(dbName);
+        instance.setDbName(databaseFilePath);
         Connection conn = instance.openDb();
         instance.setTableName(tableName);
         instance.setTableColumns(tableColumns);
@@ -101,33 +103,43 @@ public class DatabaseTest {
     @Test
     public void test3InsertStat() throws SQLException {
         System.out.println("insertStat");
-        String dbName = databaseFilePath;
         ArrayList<String> message =
                 new ArrayList<>(Arrays.asList("12345", "6789.123"));
         Database instance = new Database();
-        instance.setDbName(dbName);
+        instance.setDbName(databaseFilePath);
         Connection conn = instance.openDb();
         instance.setTableName(tableName);
-        //instance.setTableColumns(tableColumns);
         instance.setDbConnection(conn);
         instance.setStatMessage(message);
         Boolean result = instance.insertStat();
         assertTrue(result);
+        // Test reinsertion of duplicates
+        result = instance.insertStat();
+        assertFalse(result);
     }
 
     /**
      * Test of selectStat method, of class Database.
      * @throws java.lang.Exception
      */
-    @Ignore
     @Test
     public void test4SelectStat() throws Exception {
         System.out.println("selectStat");
+        ArrayList<String> expResult = new ArrayList<>();
+        expResult.add("12345");
+        System.out.println("Expected result: " + expResult);
+        
         Database instance = new Database();
-        instance.selectStat();
-        fail("The test case is a prototype.");
+        instance.setDbName(databaseFilePath);
+        Connection dbConnection = instance.openDb();
+        instance.setDbConnection(dbConnection);
+        instance.setTableName(tableName);
+        instance.setColumnName("date");
+        ArrayList<String> result = instance.selectStat();      
+        System.out.println("Result: " + result);
+        assertEquals(result, expResult);
     }
-
+        
     /**
      * Test of setDbName method, of class Database.
      */
