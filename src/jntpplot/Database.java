@@ -73,13 +73,13 @@ public class Database {
     
     // http://www.tutorialspoint.com/sqlite/sqlite_java.htm
     public Connection openDb() {
-    try {
-        Class.forName("org.sqlite.JDBC");
-        dbConnection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-    } catch ( ClassNotFoundException | SQLException e ) {
-        logger.error( e.getClass().getName() + ": " + e.getMessage() );
-        System.exit(0);
-    }
+        try {
+            Class.forName("org.sqlite.JDBC");
+            dbConnection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+        } catch ( ClassNotFoundException | SQLException e ) {
+            logger.error( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
         logger.trace("Opened database successfully");
         return dbConnection;
     }
@@ -132,8 +132,7 @@ public class Database {
             }
         }
         return false;
-    }
-   
+    }  
     
     public ArrayList<String> selectStat() throws SQLException {
         ArrayList<String> stat = new ArrayList<>();

@@ -1,0 +1,19 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+${licensePrefix}                Version 2, December 2004
+${licensePrefix}
+${licensePrefix}Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+${licensePrefix}
+${licensePrefix}Everyone is permitted to copy and distribute verbatim or modified 
+${licensePrefix}copies of this license document, and changing it is allowed as long
+${licensePrefix}as the name is changed.
+${licensePrefix}
+${licensePrefix}         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+${licensePrefix}    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+${licensePrefix}
+${licensePrefix}    0. You just DO WHAT THE FUCK YOU WANT TO.
+<#if licenseLast??>
+${licenseLast}
+</#if>
