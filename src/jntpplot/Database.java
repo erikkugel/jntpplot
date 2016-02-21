@@ -7,6 +7,7 @@ package jntpplot;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +20,13 @@ public class Database {
     private String dbName;
     private String tableName;
     private String tableColumns;
-    private Connection dbConnection;
-    private ArrayList<String> statMessage;
     private String columnName;
-    private String primaryKey;
-    private Byte primaryKeyPosition;
+    private Connection dbConnection;
+    private List<String> statMessage;
+    //private String columnName;
+    private static String sqlStatementOperation;
+    private static String sqlStatementTable;
+    private static List<String> sqlStatementColumns;
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
@@ -51,7 +54,7 @@ public class Database {
         return tableColumns;
     }
     
-    public void setStatMessage (ArrayList<String> message) {
+    public void setStatMessage (List<String> message) {
         statMessage = message;
     }
     
@@ -69,6 +72,35 @@ public class Database {
     
     public String getColumnName () {
         return columnName;
+    }
+    
+    public static void setSqlStatementOperation (String name) {
+        if ( name.compareToIgnoreCase("SELECT") == 0 ) {
+          sqlStatementOperation = name;
+        }
+    }
+    
+    public static void setSqlStatementTable (String name) {
+        sqlStatementTable = name;
+    }
+    
+    public static void setSqlStatementColumns (List names) {
+        if ( ! names.isEmpty() ) {
+            sqlStatementColumns = names;
+        }
+    }
+    
+    public static String sqlStatementConstructor() {
+        String columnList = "";
+        for (String column : sqlStatementColumns) {
+            columnList = columnList + column + ",";
+        }
+        columnList = columnList.substring(0, columnList.length()-1);
+        
+        String stmt;
+        stmt = sqlStatementOperation + " " + columnList + " FROM " + sqlStatementTable + ";";
+        System.out.println("STMT: " + stmt);
+        return stmt;
     }
     
     // http://www.tutorialspoint.com/sqlite/sqlite_java.htm
@@ -134,8 +166,8 @@ public class Database {
         return false;
     }  
     
-    public ArrayList<String> selectStat() throws SQLException {
-        ArrayList<String> stat = new ArrayList<>();
+    public List<String> selectStat() throws SQLException {
+        List<String> stat = new ArrayList<>();
         Statement stmt;    
         try {
             String nextData;
@@ -153,6 +185,32 @@ public class Database {
         }
         return stat;
     }
+    
+    /*
+    public ArrayList<ArrayList<String>> selectStats() throws SQLException {
+        ArrayList<ArrayList<String>> stat = new ArrayList<>();
+        Statement stmt;
+        for (String column : columns) {
+            tableColumns = tableColumns + ", " + column;
+        }
+        tableColumns = tableColumns.substring(0, tableColumns.length()-1);
+        
+        try {
+            String nextData;
+            String sql = "SELECT " + tableColumns + " FROM " + tableName;
+            stmt = dbConnection.createStatement();
+            ResultSet queryResult = stmt.executeQuery(sql);
+            while (queryResult.next()) {
+                nextData = queryResult.getString(columnName);
+                logger.trace("Next result: " + nextData);
+                stat.add(nextData);
+            }
+            logger.trace("Data queried successfully, result set: " + stat);
+        } catch ( Exception e ) {
+            logger.error( e.getClass().getName() + ": " + e.getMessage() );       
+        }
+        return stat;
+    }*/
 
     /*  It's debatable whether the deDupStats method is needed, since a relational database
         will filter out duplicates on primary key

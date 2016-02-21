@@ -25,7 +25,7 @@ public class Runner {
         
         Ingestor sysStats = new SysIngestor();
         sysStats.setFileName("/tmp/sys");
-        sysStats.setDbName("/tmp/stats_db");
+        sysStats.setDbName("/tmp/stats.db");
         sysStats.setTableName("sysstats");
         sysStats.setTableColumns("(julian_milliseconds LONG PRIMARY KEY DESC," +
                 "date INT," +
@@ -42,7 +42,15 @@ public class Runner {
                 "rate_exceeded INT," +
                 "kiss_of_death INT);");
               
-        return sysStats.ingestFileIntoDatabase() == 0;
+        sysStats.ingestFileIntoDatabase();
+        
+        Output sysPlot = new Output();
+        sysPlot.setDbName("/tmp/stats.db");
+        sysPlot.setTableName("sysstats");
+        sysPlot.setColumnName("packets_recieved");
+        sysPlot.plotStats();
+        
+        return true;
     }
 
     // Define and ingestor for peer statistics:
@@ -51,7 +59,7 @@ public class Runner {
         
         Ingestor peerStats = new PeerIngestor();
         peerStats.setFileName("/tmp/peers");
-        peerStats.setDbName("/tmp/stats_db");
+        peerStats.setDbName("/tmp/stats.db");
         peerStats.setTableName("peerstats");
         peerStats.setTableColumns("(julian_milliseconds LONG PRIMARY KEY DESC," + 
                 "date INT," +
@@ -62,7 +70,8 @@ public class Runner {
                 "delay REAL," +
                 "dispersion REAL," +
                 "jitter REAL);");
-
-        return peerStats.ingestFileIntoDatabase() == 0;
+        
+        peerStats.ingestFileIntoDatabase();
+        return true;
     }
 }
