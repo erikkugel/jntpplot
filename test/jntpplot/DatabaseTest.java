@@ -8,10 +8,10 @@ package jntpplot;
 import java.io.IOException;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -69,10 +69,28 @@ public class DatabaseTest {
     }
 
     /**
+     * Test of sqlStatementConstructor method, of class Database.
+     */
+    @Test
+    public void testSqlStatementConstructor() {
+        System.out.println("sqlStatementConstructor");
+        String expResult = "SELECT date,time FROM sysstats";
+        Database.setSqlStatementOperation("SELECT");
+        Database.setSqlStatementTable(tableName);
+        List columns = new ArrayList<>();
+        columns.add("date");
+        columns.add("time");
+        Database.setSqlStatementColumns(columns);
+        String result = Database.sqlStatementConstructor();
+        assertEquals(expResult, result);
+    }
+    
+    /**
      * Test of openDb method, of class Database.
      */
     @Test
     public void test1OpenDb() {
+        System.out.println("openDb");
         Database instance = new Database();
         instance.setDbName(databaseFilePath);
         Connection result = instance.openDb();
@@ -103,7 +121,7 @@ public class DatabaseTest {
     @Test
     public void test3InsertStat() throws SQLException {
         System.out.println("insertStat");
-        ArrayList<String> message =
+        List<String> message =
                 new ArrayList<>(Arrays.asList("12345", "6789.123"));
         Database instance = new Database();
         instance.setDbName(databaseFilePath);
@@ -125,82 +143,21 @@ public class DatabaseTest {
     @Test
     public void test4SelectStat() throws Exception {
         System.out.println("selectStat");
-        ArrayList<String> expResult = new ArrayList<>();
-        expResult.add("12345");
-        System.out.println("Expected result: " + expResult);
-        
-        Database instance = new Database();
+        List<String> stats =
+                new ArrayList<>(Arrays.asList("12345", "6789.123"));
+        List<String> columns =
+                new ArrayList<>(Arrays.asList("date", "time"));
+        List<List<String>> expResult = new ArrayList<>();
+        expResult.add(stats);               
+        Database instance = new Database();       
         instance.setDbName(databaseFilePath);
-        Connection dbConnection = instance.openDb();
-        instance.setDbConnection(dbConnection);
+        Connection conn = instance.openDb();
+        instance.setDbConnection(conn);
         instance.setTableName(tableName);
-        instance.setColumnName("date");
-        ArrayList<String> result = instance.selectStat();      
-        System.out.println("Result: " + result);
-        assertEquals(result, expResult);
-    }
+        instance.setColumnNames(columns);
         
-    /**
-     * Test of setDbName method, of class Database.
-     */
-    @Test
-    public void testSetDbName() {
-    }
-
-    /**
-     * Test of getDbName method, of class Database.
-     */
-    @Test
-    public void testGetDbName() {
-    }
-
-    /**
-     * Test of setTableName method, of class Database.
-     */
-    @Test
-    public void testSetTableName() {
-    }
-
-    /**
-     * Test of getTableName method, of class Database.
-     */
-    @Test
-    public void testGetTableName() {
-    }
-
-    /**
-     * Test of setTableColumns method, of class Database.
-     */
-    @Test
-    public void testSetTableColumns() {
-    }
-
-    /**
-     * Test of getTableColumns method, of class Database.
-     */
-    @Test
-    public void testGetTableColumns() {
-    }
-
-    /**
-     * Test of setStatMessage method, of class Database.
-     */
-    @Test
-    public void testSetStatMessage() {
-    }
-
-    /**
-     * Test of setDbConnection method, of class Database.
-     */
-    @Test
-    public void testSetDbConnection() {
-    }
-
-    /**
-     * Test of getDbConnection method, of class Database.
-     */
-    @Test
-    public void testGetDbConnection() {
+        List<List<String>> result = instance.selectStats();
+        assertEquals(expResult, result);
     }
     
 }

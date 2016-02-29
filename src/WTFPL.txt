@@ -10,7 +10,7 @@ ${licensePrefix}Everyone is permitted to copy and distribute verbatim or modifie
 ${licensePrefix}copies of this license document, and changing it is allowed as long
 ${licensePrefix}as the name is changed.
 ${licensePrefix}
-${licensePrefix}         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+${licensePrefix}            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 ${licensePrefix}    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 ${licensePrefix}
 ${licensePrefix}    0. You just DO WHAT THE FUCK YOU WANT TO.

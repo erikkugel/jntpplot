@@ -20,14 +20,13 @@ public class Database {
     private String dbName;
     private String tableName;
     private String tableColumns;
-    private String columnName;
+    private List<String> columnNames;
     private Connection dbConnection;
     private List<String> statMessage;
-    //private String columnName;
+
     private static String sqlStatementOperation;
     private static String sqlStatementTable;
-    private static List<String> sqlStatementColumns;
-    
+    private static List<String> sqlStatementColumns;    
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
     public void setDbName (String name) {
@@ -54,7 +53,7 @@ public class Database {
         return tableColumns;
     }
     
-    public void setStatMessage (List<String> message) {
+    public void setStatMessage (List message) {
         statMessage = message;
     }
     
@@ -66,12 +65,12 @@ public class Database {
         return dbConnection;
     }
     
-    public void setColumnName (String name) {
-        columnName = name;
+    public void setColumnNames (List names) {
+        columnNames = names;
     }
     
-    public String getColumnName () {
-        return columnName;
+    public List<String> getColumnNames () {
+        return columnNames;
     }
     
     public static void setSqlStatementOperation (String name) {
@@ -90,7 +89,7 @@ public class Database {
         }
     }
     
-    public static String sqlStatementConstructor() {
+    static String sqlStatementConstructor() {
         String columnList = "";
         for (String column : sqlStatementColumns) {
             columnList = columnList + column + ",";
@@ -98,8 +97,8 @@ public class Database {
         columnList = columnList.substring(0, columnList.length()-1);
         
         String stmt;
-        stmt = sqlStatementOperation + " " + columnList + " FROM " + sqlStatementTable + ";";
-        System.out.println("STMT: " + stmt);
+        stmt = sqlStatementOperation + " " + columnList + " FROM " + sqlStatementTable;
+        logger.trace("SQL Statement: " + stmt);
         return stmt;
     }
     
@@ -166,24 +165,32 @@ public class Database {
         return false;
     }  
     
-    public List<String> selectStat() throws SQLException {
-        List<String> stat = new ArrayList<>();
-        Statement stmt;    
+    public List<List<String>> selectStats() throws SQLException {
+        List<List<String>> stats = new ArrayList<>();
+        
         try {
-            String nextData;
-            String sql = "SELECT " + columnName + " FROM " + tableName;
-            stmt = dbConnection.createStatement();
-            ResultSet queryResult = stmt.executeQuery(sql);
-            while (queryResult.next()) {
-                nextData = queryResult.getString(columnName);
-                logger.trace("Next result: " + nextData);
-                stat.add(nextData);
+            Database.setSqlStatementTable(tableName);
+            Database.setSqlStatementColumns(columnNames);
+            Database.setSqlStatementOperation("SELECT");
+            String sql = Database.sqlStatementConstructor();
+
+            Statement selectStmt = dbConnection.createStatement();    
+            ResultSet queryResult = selectStmt.executeQuery(sql);
+                      
+            while (queryResult.next()) {               
+                List<String> nextData = new ArrayList<>();  
+                for (String nextColumn : columnNames) {
+                    nextData.add(queryResult.getString(nextColumn));
+                }              
+                stats.add(nextData);
+                logger.trace("Next query row: " + nextData); 
             }
-            logger.trace("Data queried successfully, result set: " + stat);
+            
+            logger.trace("Data queried successfully, result set: " + stats);
         } catch ( Exception e ) {
             logger.error( e.getClass().getName() + ": " + e.getMessage() );       
         }
-        return stat;
+        return stats;
     }
     
     /*

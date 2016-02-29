@@ -17,6 +17,7 @@ package jntpplot;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,57 +51,36 @@ public class PlotterTest {
     }
 
     /**
-     * Test of setStats method, of class Plotter.
-     */
-    @Test
-    public void testSetStats() {
-    }
-
-    /**
-     * Test of setStatLablel method, of class Plotter.
-     */
-    @Test
-    public void testSetStatLablel() {
-    }
-
-    /**
-     * Test of setPerLabel method, of class Plotter.
-     */
-    @Test
-    public void testSetPerLabel() {
-    }
-
-    /**
-     * Test of setPlotName method, of class Plotter.
-     */
-    @Test
-    public void testSetPlotName() {
-    }
-
-    /**
-     * Test of setOutput method, of class Plotter.
-     */
-    @Test
-    public void testSetOutput() {
-    }
-
-    /**
      * Test of lineChart method, of class Plotter.
      */
     @Test
     public void testLineChart() {
-        System.out.println("lineChart");
-        ArrayList<String> stats = new ArrayList<>();
-        stats.add("1");
-        stats.add("3");
-        stats.add("9");
-        stats.add("27");
+        System.out.println("lineChart");  
+        
+        List stats = new ArrayList<>();
+        for (int i = 1; i <= 4; i ++) {
+            List stat = new ArrayList<>();
+            stat.add(i);
+            stat.add(i+i);
+            stat.add(i*i);
+            stat.add(i*i*i);
+            stats.add(stat);        
+        }
+        
+        List statsLabels = new ArrayList<>();
+        statsLabels.add("I");
+        statsLabels.add("I+I");
+        statsLabels.add("I^2");
+        statsLabels.add("I^3");
+        
         Plotter instance = new Plotter();       
         instance.setStats(stats);
-        instance.setStatLablel("Test Stats");
-        instance.setPerLabel("Test Interval");
+        instance.setStatsLabels(statsLabels);
+        instance.setPlotLabel("Test Interval");
+        instance.setYLabel("Count");
         instance.setOutput("test/jntpplot/lineChart.jpeg");
         instance.lineChart();
+        
         File jpeg = new File("test/jntpplot/lineChart.jpeg");
         assertTrue( jpeg.isFile() );
     }

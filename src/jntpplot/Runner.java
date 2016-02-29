@@ -8,6 +8,8 @@ package jntpplot;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -23,40 +25,21 @@ public class Runner {
     public boolean sysStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         logger.trace(getClass().getName());
         
-        Ingestor sysStats = new SysIngestor();
-        sysStats.setFileName("/tmp/sys");
-        sysStats.setDbName("/tmp/stats.db");
-        sysStats.setTableName("sysstats");
-        sysStats.setTableColumns("(julian_milliseconds LONG PRIMARY KEY DESC," +
-                "date INT," +
-                "time REAL," +
-                "time_since_restart INT," +
-                "packets_recieved INT," +
-                "packats_processed INT," +
-                "current_version INT," +
-                "previous_version INT," +
-                "bad_version INT," +
-                "access_denied INT," +
-                "bad_length_or_format INT," +
-                "bad_authentication INT," +
-                "rate_exceeded INT," +
-                "kiss_of_death INT);");
-              
-        sysStats.ingestFileIntoDatabase();
+        Ingestor sysStatsIngestor = new SysIngestor();
+        sysStatsIngestor.setDbName("/tmp/stats.db");
+        sysStatsIngestor.setFileName("/tmp/sys");
+        sysStatsIngestor.ingestFileIntoDatabase();
         
-        Output sysPlot = new Output();
-        sysPlot.setDbName("/tmp/stats.db");
-        sysPlot.setTableName("sysstats");
-        sysPlot.setColumnName("packets_recieved");
-        sysPlot.plotStats();
-        
+        Output sysStatsOutput = new SysOutput();
+        sysStatsOutput.setDbName(sysStatsIngestor.getDbName());
+        sysStatsOutput.plotStats();
         return true;
     }
 
     // Define and ingestor for peer statistics:
     public boolean peerStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         logger.trace(getClass().getName());
-        
+        /*
         Ingestor peerStats = new PeerIngestor();
         peerStats.setFileName("/tmp/peers");
         peerStats.setDbName("/tmp/stats.db");
@@ -72,6 +55,8 @@ public class Runner {
                 "jitter REAL);");
         
         peerStats.ingestFileIntoDatabase();
+                */
         return true;
+                
     }
 }

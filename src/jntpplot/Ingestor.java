@@ -8,9 +8,7 @@ package jntpplot;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +19,10 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class Ingestor {
     
-    private String fileName;
-    private String dbName;
-    private String tableName;
-    private String tableColumns;
+    String fileName;
+    String dbName;
+    String tableName;
+    String tableColumns;
     ArrayList<ArrayList<String>> stats;
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
@@ -61,7 +59,7 @@ public abstract class Ingestor {
         return tableColumns;
     }
     
-    private void setStats() throws IOException, FileNotFoundException, ClassNotFoundException {
+    private void readStats() throws IOException, FileNotFoundException, ClassNotFoundException {
         StatsFile statsFile = new StatsFile();        
         statsFile.setFileName(fileName);
         stats = statsFile.injestFile();
@@ -69,16 +67,16 @@ public abstract class Ingestor {
     
     abstract ArrayList<ArrayList<String>> mutateStats ();
     
-    private int setDatabase() throws SQLException {
+    abstract boolean setupDatabase() throws SQLException;
+    
+    private int insertStats() throws SQLException {
         Database statsDb = new Database();
         statsDb.setDbName(dbName);
         statsDb.setTableName(tableName);
-        statsDb.setTableColumns(tableColumns);
         
         // Make sure the table is in place and create it otherwise
         Connection conn = statsDb.openDb();
         statsDb.setDbConnection(conn);
-        statsDb.crateTable();
 
         // Ingest
         int statsCount = 0;
@@ -96,10 +94,10 @@ public abstract class Ingestor {
     
     public Integer ingestFileIntoDatabase() throws IOException, ClassNotFoundException, SQLException {
         logger.trace("Ingestor ingestFileIntoDatabase");
-        
-        setStats();
+        setupDatabase();
+        readStats();
         mutateStats();
-        int intoDatabase = setDatabase();
+        int intoDatabase = insertStats();
         return intoDatabase;
     }
     

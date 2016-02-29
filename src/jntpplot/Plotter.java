@@ -16,14 +16,16 @@
 package jntpplot;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.logging.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jfree.chart.JFreeChart; 
 import org.jfree.chart.ChartFactory; 
 import org.jfree.chart.ChartUtilities; 
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -31,28 +33,29 @@ import org.apache.logging.log4j.Logger;
  */
 public class Plotter {
     
-    private ArrayList<String> stats;
-    private String statLabel;
-    private String perLabel;
-    private String plotName;
+    private List<List<String>> stats;
+    private List<String> statsLabels;
+    private String yLabel;
+    private String plotLabel;
     private String output;
+
     
     private static final Logger logger = LogManager.getLogger(Jntpplot.class);
     
-    public void setStats (ArrayList<String> strings) {
+    public void setStats (List<List<String>> strings) {
         stats = strings;
     }
     
-    public void setStatLablel (String name) {
-        statLabel = name;
+    public void setStatsLabels (List<String> names) {
+        statsLabels = names;
     }
     
-    public void setPerLabel (String name) {
-        perLabel = name;
+    public void setYLabel (String name) {
+       yLabel = name;
     }
     
-    public void setPlotName (String name) {
-        plotName = name;
+    public void setPlotLabel (String name) {
+        plotLabel = name;
     }
     
     public void setOutput (String name) {
@@ -61,30 +64,34 @@ public class Plotter {
     
     // http://www.tutorialspoint.com/jfreechart/jfreechart_line_chart.htm
     public void lineChart () {
-        int x = 1;
-        DefaultCategoryDataset line_chart_dataset = new DefaultCategoryDataset();
-        for (String stat : stats) {
-            line_chart_dataset.addValue(
-                    Float.parseFloat(stat),
-                    "stats",
-                    String.valueOf(x) );
-            x ++;
+        DefaultCategoryDataset statsDataset = new DefaultCategoryDataset();
+        System.out.println(stats);
+        for (List<String> stat : stats) {
+            for ( int i = 1; i < statsLabels.size(); i++ ) {
+                statsDataset.addValue(
+                        (Number) Long.valueOf(stat.get(i)),
+                        (Comparable) statsLabels.get(i),
+                        (Comparable) stat.get(0)
+                );
+            }
         }
-        
-        JFreeChart lineChartObject = ChartFactory.createLineChart(
-                plotName,
-                perLabel,
-                statLabel,
-                line_chart_dataset,PlotOrientation.VERTICAL,
-                true,true,false);
 
-        int width = 640; /* Width of the image */
-        int height = 480; /* Height of the image */ 
+        JFreeChart lineChartObject = ChartFactory.createLineChart(
+                plotLabel,
+                statsLabels.get(0),
+                yLabel,
+                statsDataset,PlotOrientation.VERTICAL,
+                true,true,false
+        );
+
+        int width = 1024;
+        int height = 1280;
         File lineChart = new File(output); 
         try {
             ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
-        } catch (Exception e) {
-            logger.error( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Plotter.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("Failed to output linechart JPEG @ " + output + ": " + ex);
         }
     }
             

@@ -15,22 +15,19 @@
  */
 package jntpplot;
 
-import java.io.File;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
 
 /**
  *
  * @author ernest
  */
-public class Output {
+public abstract class Output {
     
-    private String dbName;
-    private String tableName;
-    private String columnName;
+    String dbName;
+    String tableName;
+    List<String> columnNames;
+    //List<List<String>> stats;
     
     public void setDbName(String name) {
         dbName = name;
@@ -48,26 +45,10 @@ public class Output {
         return tableName;
     }
     
-    public void setColumnName(String name) {
-        columnName = name;
+    public void setColumnNames(List<String> names) {
+        columnNames = names;
     }
     
-    public void plotStats () throws SQLException {
-        
-        Database statsDb = new Database();
-        statsDb.setDbName(dbName);
-        Connection dbConnection = statsDb.openDb();
-        statsDb.setDbConnection(dbConnection);
-        statsDb.setTableName(tableName);
-        statsDb.setColumnName(columnName);
-        ArrayList<String> stats = statsDb.selectStat();      
-
-        Plotter statsPlot = new Plotter();       
-        statsPlot.setStats(stats);
-        statsPlot.setStatLablel(columnName);
-        statsPlot.setPerLabel("Test Interval");
-        statsPlot.setOutput("/tmp/" + tableName + "_" + columnName + ".jpeg");
-        statsPlot.lineChart();
-    }
+    abstract void plotStats () throws SQLException;
     
 }
