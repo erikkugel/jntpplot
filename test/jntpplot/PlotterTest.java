@@ -60,11 +60,11 @@ public class PlotterTest {
         List stats = new ArrayList<>();
         for (int i = 1; i <= 4; i ++) {
             List stat = new ArrayList<>();
-            stat.add(i);
-            stat.add(i+i);
-            stat.add(i*i);
-            stat.add(i*i*i);
-            stats.add(stat);        
+            stat.add(String.valueOf(i));
+            stat.add(String.valueOf(i+i));
+            stat.add(String.valueOf(i*i));
+            stat.add(String.valueOf(i*i*i));
+            stats.add(stat);
         }
         
         List statsLabels = new ArrayList<>();

@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author ernest
  */
-public class SysIngestor extends Ingestor {
+public class SysInput extends Input {
     
     final static byte DAY_FIELD = 0;
     final static byte SECOND_FIELD = 1;

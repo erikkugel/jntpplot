@@ -24,24 +24,18 @@ import java.util.List;
  *
  * @author ernest
  */
-public class SysOutput extends Output {
+public class PeerOutput extends Output {
     
     @Override
     public void plotStats () throws SQLException {        
-        setTableName("sysstats");
+        setTableName("peerstats");
         
         List columns = new ArrayList<>();
-        columns.add("julian_milliseconds");
-        columns.add("packets_recieved");
-        columns.add("packets_processed");
-        columns.add("current_version");
-        columns.add("previous_version");
-        columns.add("bad_version");
-        columns.add("access_denied");
-        columns.add("bad_length_or_format");
-        columns.add("bad_authentication");
-        columns.add("rate_exceeded");
-        columns.add("kiss_of_death");
+        columns.add("peer_address");
+        columns.add("offset");
+        columns.add("delay");
+        columns.add("dispersion");
+        columns.add("jitter");
         
         setColumnNames(columns);
         
@@ -52,14 +46,15 @@ public class SysOutput extends Output {
         statsDb.setTableName(tableName);
         statsDb.setColumnNames(columnNames);
         List<List<String>> stats = statsDb.selectStats();
-        System.out.println("SSSSTATS: " + stats);
+        //System.out.println("SSSSTATS: " + stats);
 
         Plotter statsPlot = new Plotter();     
         statsPlot.setStats(stats);
         statsPlot.setStatsLabels(columnNames);
-        statsPlot.setYLabel("Count");
+        statsPlot.setYLabel("Seconds");
         statsPlot.setPlotLabel(tableName);
-        statsPlot.setOutput("/tmp/sysstats_per_" + columnNames.get(0) + ".jpeg");
+        statsPlot.setOutput("/tmp/peerstats_per_" + columnNames.get(0) + ".jpeg");
+        statsPlot.setChartType("bar");
         statsPlot.chart();
     }
 }

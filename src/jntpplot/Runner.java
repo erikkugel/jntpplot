@@ -25,7 +25,7 @@ public class Runner {
     public boolean sysStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         logger.trace(getClass().getName());
         
-        Ingestor sysStatsIngestor = new SysIngestor();
+        Input sysStatsIngestor = new SysInput();
         sysStatsIngestor.setDbName("/tmp/stats.db");
         sysStatsIngestor.setFileName("/tmp/sys");
         sysStatsIngestor.ingestFileIntoDatabase();
@@ -40,7 +40,7 @@ public class Runner {
     public boolean peerStats () throws SQLException, IOException, FileNotFoundException, ClassNotFoundException {
         logger.trace(getClass().getName());
         /*
-        Ingestor peerStats = new PeerIngestor();
+        Input peerStats = new PeerIngestor();
         peerStats.setFileName("/tmp/peers");
         peerStats.setDbName("/tmp/stats.db");
         peerStats.setTableName("peerstats");
@@ -56,7 +56,15 @@ public class Runner {
         
         peerStats.ingestFileIntoDatabase();
                 */
+        
+        Input peerStatsIngestor = new PeerInput();
+        peerStatsIngestor.setDbName("/tmp/stats.db");
+        peerStatsIngestor.setFileName("/tmp/peers");
+        peerStatsIngestor.ingestFileIntoDatabase();
+        
+        Output peerStatsOutput = new PeerOutput();
+        peerStatsOutput.setDbName(peerStatsIngestor.getDbName());
+        peerStatsOutput.plotStats();
         return true;
-                
     }
 }

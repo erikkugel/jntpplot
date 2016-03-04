@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author ernest
  */
-public abstract class Ingestor {
+public abstract class Input {
     
     String fileName;
     String dbName;
