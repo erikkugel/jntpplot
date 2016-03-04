@@ -13,7 +13,7 @@
  * 
  *     0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-package jntpplot;
+package org.no_ip.xeps.jntpplot;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,18 +24,24 @@ import java.util.List;
  *
  * @author ernest
  */
-public class PeerOutput extends Output {
+public class SysOutput extends Output {
     
     @Override
     public void plotStats () throws SQLException {        
-        setTableName("peerstats");
+        setTableName("sysstats");
         
         List columns = new ArrayList<>();
-        columns.add("peer_address");
-        columns.add("offset");
-        columns.add("delay");
-        columns.add("dispersion");
-        columns.add("jitter");
+        columns.add("julian_milliseconds");
+        columns.add("packets_recieved");
+        columns.add("packets_processed");
+        columns.add("current_version");
+        columns.add("previous_version");
+        columns.add("bad_version");
+        columns.add("access_denied");
+        columns.add("bad_length_or_format");
+        columns.add("bad_authentication");
+        columns.add("rate_exceeded");
+        columns.add("kiss_of_death");
         
         setColumnNames(columns);
         
@@ -46,15 +52,13 @@ public class PeerOutput extends Output {
         statsDb.setTableName(tableName);
         statsDb.setColumnNames(columnNames);
         List<List<String>> stats = statsDb.selectStats();
-        //System.out.println("SSSSTATS: " + stats);
 
         Plotter statsPlot = new Plotter();     
         statsPlot.setStats(stats);
         statsPlot.setStatsLabels(columnNames);
-        statsPlot.setYLabel("Seconds");
+        statsPlot.setYLabel("Count");
         statsPlot.setPlotLabel(tableName);
-        statsPlot.setOutput("/tmp/peerstats_per_" + columnNames.get(0) + ".jpeg");
-        statsPlot.setChartType("bar");
+        statsPlot.setOutput("/tmp/sysstats_per_" + columnNames.get(0) + ".jpeg");
         statsPlot.chart();
     }
 }

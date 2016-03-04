@@ -13,7 +13,7 @@
  * 
  *     0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-package jntpplot;
+package org.no_ip.xeps.jntpplot;
 
 import java.io.*;
 import java.math.BigDecimal;

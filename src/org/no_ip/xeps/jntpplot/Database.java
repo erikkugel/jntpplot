@@ -1,9 +1,19 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                 Version 2, December 2004
+ * 
+ * Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+ * 
+ * Everyone is permitted to copy and distribute verbatim or modified 
+ * copies of this license document, and changing it is allowed as long
+ * as the name is changed.
+ * 
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ * 
+ *     0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-package jntpplot;
+package org.no_ip.xeps.jntpplot;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -192,56 +202,5 @@ public class Database {
         }
         return stats;
     }
-    
-    /*
-    public ArrayList<ArrayList<String>> selectStats() throws SQLException {
-        ArrayList<ArrayList<String>> stat = new ArrayList<>();
-        Statement stmt;
-        for (String column : columns) {
-            tableColumns = tableColumns + ", " + column;
-        }
-        tableColumns = tableColumns.substring(0, tableColumns.length()-1);
-        
-        try {
-            String nextData;
-            String sql = "SELECT " + tableColumns + " FROM " + tableName;
-            stmt = dbConnection.createStatement();
-            ResultSet queryResult = stmt.executeQuery(sql);
-            while (queryResult.next()) {
-                nextData = queryResult.getString(columnName);
-                logger.trace("Next result: " + nextData);
-                stat.add(nextData);
-            }
-            logger.trace("Data queried successfully, result set: " + stat);
-        } catch ( Exception e ) {
-            logger.error( e.getClass().getName() + ": " + e.getMessage() );       
-        }
-        return stat;
-    }*/
-
-    /*  It's debatable whether the deDupStats method is needed, since a relational database
-        will filter out duplicates on primary key
-    */
-    /*
-    public ArrayList<ArrayList<String>> deDupStats (ArrayList<ArrayList<String>> stats) {
-        try {
-            DatabaseMetaData metaData = dbConnection.getMetaData();
-            ResultSet columns = metaData.getColumns(null, null, tableName, primaryKey);
-            primaryKeyPosition = Byte.valueOf(columns.getString(17));
-            logger.trace("Found primary key titled <" + primaryKey + "> at position " + primaryKeyPosition);
-            String sql = "SELECT " + primaryKey + " FROM " + tableName;
-            Statement stmt = dbConnection.createStatement();
-            ResultSet presentStats = stmt.executeQuery(sql);
-            while (presentStats.next()) {
-                String presentStat = presentStats.getString(0);
-                stats.remove(presentStat);
-            }
-            
-        } catch (SQLException e) {
-            logger.error( e.getClass().getName() + ": " + e.getMessage());
-        }
-        return stats;
-    }
-    */
     
 }

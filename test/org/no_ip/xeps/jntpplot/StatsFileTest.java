@@ -1,10 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                 Version 2, December 2004
+ * 
+ * Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+ * 
+ * Everyone is permitted to copy and distribute verbatim or modified 
+ * copies of this license document, and changing it is allowed as long
+ * as the name is changed.
+ * 
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *     TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ * 
+ *     0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-package jntpplot;
+package org.no_ip.xeps.jntpplot;
 
+import org.no_ip.xeps.jntpplot.StatsFile;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -46,7 +57,7 @@ public class StatsFileTest {
     @Test
     public void testInjestFile() throws Exception {
         System.out.println("getInjestFile");
-        String fileName = "test/jntpplot/sys";
+        String fileName = "/tmp/test_sys";
         
         File statsFile = new File(fileName);
         statsFile.deleteOnExit();

@@ -13,11 +13,13 @@
  * 
  *     0. You just DO WHAT THE FUCK YOU WANT TO.
  */
-package jntpplot;
+package org.no_ip.xeps.jntpplot;
 
+//import jntpplot.Plotter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.no_ip.xeps.jntpplot.Plotter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -69,7 +71,7 @@ public class PlotterTest {
         
         List statsLabels = new ArrayList<>();
         statsLabels.add("I");
-        statsLabels.add("I+I");
+        statsLabels.add("I*2");
         statsLabels.add("I^2");
         statsLabels.add("I^3");
         
@@ -78,10 +80,10 @@ public class PlotterTest {
         instance.setStatsLabels(statsLabels);
         instance.setPlotLabel("Test Interval");
         instance.setYLabel("Count");
-        instance.setOutput("test/jntpplot/lineChart.jpeg");
-        instance.lineChart();
+        instance.setOutput("test/org/no_ip/xeps/jntpplot/lineChart.jpeg");
+        instance.chart();
         
-        File jpeg = new File("test/jntpplot/lineChart.jpeg");
+        File jpeg = new File("test/org/no_ip/xeps/jntpplot/lineChart.jpeg");
         assertTrue( jpeg.isFile() );
     }
     
