@@ -1,5 +1,4 @@
 /build/
 /dist/
 /nbproject/private/
-/test/jntpplot/sys
-/test/jntpplot/stats_db
+/test/org/no_ip/xeps/jntpplot/lineChart

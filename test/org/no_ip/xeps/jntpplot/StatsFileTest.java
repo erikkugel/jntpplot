@@ -57,7 +57,7 @@ public class StatsFileTest {
     @Test
     public void testInjestFile() throws Exception {
         System.out.println("getInjestFile");
-        String fileName = "/tmp/test_sys";
+        String fileName = "test/org/no_ip/xeps/jntpplot/sys";
         
         File statsFile = new File(fileName);
         statsFile.deleteOnExit();
