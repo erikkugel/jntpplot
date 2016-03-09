@@ -27,38 +27,46 @@ import java.util.List;
 public class SysOutput extends Output {
     
     @Override
-    public void plotStats () throws SQLException {        
-        setTableName("sysstats");
-        
+    public void plotStats () throws SQLException {       
+        Database statsDb = new Database();
         List columns = new ArrayList<>();
+        List<List<String>> stats;
+        Plotter statsPlot = new Plotter();
+        
+        statsDb.setDbName(dbName);
+        setTableName("sysstats");
+        Connection dbConnection = statsDb.openDb();
+        statsDb.setDbConnection(dbConnection);
+        statsDb.setTableName(tableName);    
+        
         columns.add("julian_milliseconds");
-        columns.add("packets_recieved");
-        columns.add("packets_processed");
         columns.add("current_version");
         columns.add("previous_version");
+        columns.add("bad_version");        
+        setColumnNames(columns);      
+        statsDb.setColumnNames(columnNames);
+        stats = statsDb.selectStats();            
+        statsPlot.setStats(stats);
+        statsPlot.setStatsLabels(columnNames);
+        statsPlot.setYLabel("Count");
+        statsPlot.setPlotLabel(tableName);
+        statsPlot.setOutput("/tmp/sysstats_versions_per_" + columnNames.get(0) + ".jpeg");
+        statsPlot.chart();
+        
+        columns.clear();
+        columns.add("julian_milliseconds");
         columns.add("bad_version");
         columns.add("access_denied");
         columns.add("bad_length_or_format");
         columns.add("bad_authentication");
         columns.add("rate_exceeded");
         columns.add("kiss_of_death");
-        
-        setColumnNames(columns);
-        
-        Database statsDb = new Database();
-        statsDb.setDbName(dbName);
-        Connection dbConnection = statsDb.openDb();
-        statsDb.setDbConnection(dbConnection);
-        statsDb.setTableName(tableName);
+        setColumnNames(columns);      
         statsDb.setColumnNames(columnNames);
-        List<List<String>> stats = statsDb.selectStats();
-
-        Plotter statsPlot = new Plotter();     
+        stats = statsDb.selectStats();
         statsPlot.setStats(stats);
         statsPlot.setStatsLabels(columnNames);
-        statsPlot.setYLabel("Count");
-        statsPlot.setPlotLabel(tableName);
-        statsPlot.setOutput("/tmp/sysstats_per_" + columnNames.get(0) + ".jpeg");
-        statsPlot.chart();
+        statsPlot.setOutput("/tmp/sysstats_errors_per_" + columnNames.get(0) + ".jpeg");
+        statsPlot.chart();        
     }
 }
